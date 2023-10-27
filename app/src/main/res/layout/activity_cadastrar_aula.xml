@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:fillViewport="true">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".ui.activity.FormularioProdutoActivity">
+
+    <TextView
+        android:id="@+id/activity_cadastrar_aula_titulo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:fontFamily="@font/montserrat_bold"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="Cadastrar nova aula"
+        android:textColor="@color/colorPrimary"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/activity_cadastrar_aula_textinputlayout_nome"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:boxStrokeColor="@color/colorPrimaryVariant"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_cadastrar_aula_titulo">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/activity_cadastrar_aula_nome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nome da cadeira"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/activity_cadastrar_aula_textinputlayout_professor"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:boxStrokeColor="@color/colorPrimaryVariant"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_cadastrar_aula_textinputlayout_nome">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/activity_cadastrar_aula_professor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Professor"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/activity_cadastrar_aula_textinputlayout_turma"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:boxStrokeColor="@color/colorPrimaryVariant"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_cadastrar_aula_textinputlayout_professor">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/activity_cadastrar_aula_turma"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Turma"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/activity_cadastrar_aula_textinputlayout_bloco"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:boxStrokeColor="@color/colorPrimaryVariant"
+        app:layout_constraintEnd_toStartOf="@id/activity_cadastrar_aula_textinputlayout_sala"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_cadastrar_aula_textinputlayout_turma">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/activity_cadastrar_aula_bloco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Bloco"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/activity_cadastrar_aula_textinputlayout_sala"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:boxStrokeColor="@color/colorPrimaryVariant"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/activity_cadastrar_aula_textinputlayout_bloco"
+        app:layout_constraintTop_toBottomOf="@id/activity_cadastrar_aula_textinputlayout_turma">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/activity_cadastrar_aula_sala"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Sala"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/activity_cadastrar_aula_textinputlayout_horarioinicio"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:boxStrokeColor="@color/colorPrimaryVariant"
+        app:layout_constraintEnd_toStartOf="@id/activity_cadastrar_aula_textinputlayout_horariofim"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_cadastrar_aula_textinputlayout_bloco">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/activity_cadastrar_aula_horarioinicio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Horário início"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/activity_cadastrar_aula_textinputlayout_horariofim"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:boxStrokeColor="@color/colorPrimaryVariant"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/activity_cadastrar_aula_textinputlayout_horarioinicio"
+        app:layout_constraintTop_toBottomOf="@id/activity_cadastrar_aula_textinputlayout_bloco">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/activity_cadastrar_aula_horariofim"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Horário fim"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/activity_cadastrar_aula_botao_salvar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Salvar"
+        android:fontFamily="@font/montserrat_bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_cadastrar_aula_textinputlayout_horariofim"
+        app:layout_constraintVertical_bias="1"
+        android:backgroundTint="@color/colorSecondary"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
