@@ -18,7 +18,7 @@
     <style name="Theme.Quixabus" parent="Base.Theme.Quixabus" />
 
     <style name="H1TextViewColor" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorPrimaryVariant</item>
     </style>
 
     <style name="NormalTextViewColor" parent="@android:style/TextAppearance">
@@ -54,6 +54,10 @@
         <item name="android:backgroundTint">@color/colorSecondaryVariant</item>
         <item name="titleTextColor">@color/white</item>
         <item name="navigationIconTint">@color/white</item>
+    </style>
+
+    <style name="ExposedDropdownMenuColor" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxStrokeColor">@color/colorPrimaryVariant</item>
     </style>
 
 </resources>

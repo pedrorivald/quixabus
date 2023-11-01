@@ -1,25 +1,27 @@
 package com.dev.quixabus.ui.activity
 
-import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView.OnItemClickListener
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.annotation.MenuRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import com.dev.quixabus.R
 import com.dev.quixabus.dao.AulasDao
 import com.dev.quixabus.databinding.ActivityAgendaBinding
 import com.dev.quixabus.ui.recyclerview.adapter.ListaAulasAdapter
-import com.google.android.material.appbar.MaterialToolbar
+import com.dev.quixabus.model.DiaSemana
+
 
 class AgendaActivity : AppCompatActivity(R.layout.activity_agenda) {
 
     private val dao = AulasDao()
-    private val adapter = ListaAulasAdapter(this, aulas = dao.buscaTodos())
+    private val adapter = ListaAulasAdapter(this, aulas = dao.buscaPorDia(DiaSemana.SEGUNDA))
     private val binding by lazy {
         ActivityAgendaBinding.inflate(layoutInflater)
     }
@@ -27,6 +29,7 @@ class AgendaActivity : AppCompatActivity(R.layout.activity_agenda) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         configuraRecyclerView()
+        configuraDropdownDiasDaSemana()
         setContentView(binding.root)
 
         binding.activityAgendaFragmentTopBar.topAppBar.setNavigationOnClickListener {
@@ -36,7 +39,7 @@ class AgendaActivity : AppCompatActivity(R.layout.activity_agenda) {
 
     override fun onResume() {
         super.onResume()
-        adapter.atualiza(dao.buscaTodos())
+        adapter.atualiza(dao.buscaPorDia(DiaSemana.SEGUNDA))
         configuraFab()
     }
 
@@ -64,6 +67,31 @@ class AgendaActivity : AppCompatActivity(R.layout.activity_agenda) {
     private fun configuraRecyclerView() {
         val recyclerView = binding.activityAgendaRv
         recyclerView.adapter = adapter
+    }
+
+    private fun configuraDropdownDiasDaSemana() {
+        val diaDaSemanaEditText = binding.activityAgendaSemana.editText as? AutoCompleteTextView
+        val diasDaSemana = listOf("Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado")
+        val adapterDiasDaSemana = ArrayAdapter(this, R.layout.dias_da_semana, diasDaSemana)
+
+        diaDaSemanaEditText?.setAdapter(adapterDiasDaSemana)
+        diaDaSemanaEditText?.setText("Segunda", false)
+
+        diaDaSemanaEditText?.onItemClickListener =
+            OnItemClickListener { adapterView, view, position, id ->
+                val diaSelecionado: String? = adapterDiasDaSemana.getItem(position)
+
+                when (diaSelecionado) {
+                    "Domingo" -> adapter.atualiza(dao.buscaPorDia(DiaSemana.DOMINGO))
+                    "Segunda" -> adapter.atualiza(dao.buscaPorDia(DiaSemana.SEGUNDA))
+                    "Terça" -> adapter.atualiza(dao.buscaPorDia(DiaSemana.TERCA))
+                    "Quarta" -> adapter.atualiza(dao.buscaPorDia(DiaSemana.QUARTA))
+                    "Quinta" -> adapter.atualiza(dao.buscaPorDia(DiaSemana.QUINTA))
+                    "Sexta" -> adapter.atualiza(dao.buscaPorDia(DiaSemana.SEXTA))
+                    "Sábado" -> adapter.atualiza(dao.buscaPorDia(DiaSemana.SABADO))
+                    else -> {}
+                }
+            }
     }
 
     private fun configuraFab() {
