@@ -89,6 +89,24 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/activity_cadastrar_aula_semana"
+            style="@style/ExposedDropdownMenuColor"
+            android:layout_width="match_parent"
+            android:layout_margin="16dp"
+            android:layout_height="wrap_content"
+            android:hint="Dia da semana"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_cadastrar_aula_textinputlayout_turma">
+
+            <AutoCompleteTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                tools:ignore="LabelFor" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/activity_cadastrar_aula_textinputlayout_bloco"
             style="@style/TextFieldColor"
             android:layout_width="0dp"
@@ -99,7 +117,7 @@
             android:layout_marginBottom="16dp"
             app:layout_constraintEnd_toStartOf="@id/activity_cadastrar_aula_textinputlayout_sala"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/activity_cadastrar_aula_textinputlayout_turma">
+            app:layout_constraintTop_toBottomOf="@id/activity_cadastrar_aula_semana">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/activity_cadastrar_aula_bloco"
@@ -120,7 +138,7 @@
             android:layout_marginBottom="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/activity_cadastrar_aula_textinputlayout_bloco"
-            app:layout_constraintTop_toBottomOf="@id/activity_cadastrar_aula_textinputlayout_turma">
+            app:layout_constraintTop_toBottomOf="@id/activity_cadastrar_aula_semana">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/activity_cadastrar_aula_sala"

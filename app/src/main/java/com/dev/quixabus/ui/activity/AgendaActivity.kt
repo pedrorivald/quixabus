@@ -20,8 +20,9 @@ import com.dev.quixabus.model.DiaSemana
 
 class AgendaActivity : AppCompatActivity(R.layout.activity_agenda) {
 
+    private var diaSelecionado: String? = null
     private val dao = AulasDao()
-    private val adapter = ListaAulasAdapter(this, aulas = dao.buscaPorDia(DiaSemana.SEGUNDA))
+    private val adapter = ListaAulasAdapter(this, aulas = dao.buscaPorDia(diaSemanaSelecionado(diaSelecionado)))
     private val binding by lazy {
         ActivityAgendaBinding.inflate(layoutInflater)
     }
@@ -39,7 +40,7 @@ class AgendaActivity : AppCompatActivity(R.layout.activity_agenda) {
 
     override fun onResume() {
         super.onResume()
-        adapter.atualiza(dao.buscaPorDia(DiaSemana.SEGUNDA))
+        adapter.atualiza(dao.buscaPorDia(diaSemanaSelecionado(diaSelecionado)))
         configuraFab()
     }
 
@@ -70,8 +71,8 @@ class AgendaActivity : AppCompatActivity(R.layout.activity_agenda) {
     }
 
     private fun configuraDropdownDiasDaSemana() {
-        val diaDaSemanaEditText = binding.activityAgendaSemana.editText as? AutoCompleteTextView
         val diasDaSemana = listOf("Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado")
+        val diaDaSemanaEditText = binding.activityAgendaSemana.editText as? AutoCompleteTextView
         val adapterDiasDaSemana = ArrayAdapter(this, R.layout.dias_da_semana, diasDaSemana)
 
         diaDaSemanaEditText?.setAdapter(adapterDiasDaSemana)
@@ -79,19 +80,24 @@ class AgendaActivity : AppCompatActivity(R.layout.activity_agenda) {
 
         diaDaSemanaEditText?.onItemClickListener =
             OnItemClickListener { adapterView, view, position, id ->
-                val diaSelecionado: String? = adapterDiasDaSemana.getItem(position)
-
-                when (diaSelecionado) {
-                    "Domingo" -> adapter.atualiza(dao.buscaPorDia(DiaSemana.DOMINGO))
-                    "Segunda" -> adapter.atualiza(dao.buscaPorDia(DiaSemana.SEGUNDA))
-                    "Terça" -> adapter.atualiza(dao.buscaPorDia(DiaSemana.TERCA))
-                    "Quarta" -> adapter.atualiza(dao.buscaPorDia(DiaSemana.QUARTA))
-                    "Quinta" -> adapter.atualiza(dao.buscaPorDia(DiaSemana.QUINTA))
-                    "Sexta" -> adapter.atualiza(dao.buscaPorDia(DiaSemana.SEXTA))
-                    "Sábado" -> adapter.atualiza(dao.buscaPorDia(DiaSemana.SABADO))
-                    else -> {}
-                }
+                diaSelecionado = adapterDiasDaSemana.getItem(position).toString()
+                adapter.atualiza(dao.buscaPorDia(diaSemanaSelecionado(diaSelecionado)))
             }
+    }
+
+    private fun diaSemanaSelecionado(diaText: String?): DiaSemana {
+        return when (diaText) {
+            "Domingo" -> DiaSemana.DOMINGO
+            "Segunda" -> DiaSemana.SEGUNDA
+            "Terça" -> DiaSemana.TERCA
+            "Quarta" -> DiaSemana.QUARTA
+            "Quinta" -> DiaSemana.QUINTA
+            "Sexta" -> DiaSemana.SEXTA
+            "Sábado" -> DiaSemana.SABADO
+            else -> {
+                DiaSemana.SEGUNDA
+            }
+        }
     }
 
     private fun configuraFab() {
