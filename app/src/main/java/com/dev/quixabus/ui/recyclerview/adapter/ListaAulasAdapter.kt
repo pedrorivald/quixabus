@@ -33,15 +33,25 @@ class ListaAulasAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val aula = aulas[position]
         holder.vincula(aula)
+
         holder.cardView.setOnClickListener {
             clickAula.clickAula(aula)
         }
     }
 
-    fun atualiza(aulas: List<Aula>) {
+    fun atualizar(aulas: List<Aula>) {
         this.aulas.clear()
         this.aulas.addAll(aulas)
         notifyDataSetChanged()
+    }
+
+    fun deletarItem(index: Int) {
+        aulas.removeAt(index)
+        notifyDataSetChanged()
+    }
+
+    fun buscaItem(index: Int): Aula {
+        return aulas[index];
     }
 
     interface ClickAula {
@@ -61,7 +71,7 @@ class ListaAulasAdapter(
             nome.text = aula.nome
             horario.text = aula.horarioInicio + " - " + aula.horarioFim
             turmaLocal.text = "Turma  " + aula.turma + " - Bloco " + aula.bloco + ", Sala " + aula.sala
-            professor.text = aula.professor
+            professor.text = "Prof. " + aula.professor
         }
 
     }

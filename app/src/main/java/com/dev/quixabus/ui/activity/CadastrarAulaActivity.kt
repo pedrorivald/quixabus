@@ -30,7 +30,7 @@ class CadastrarAulaActivity : AppCompatActivity(R.layout.activity_cadastrar_aula
 
         botaoSalvar.setOnClickListener {
             val aula = criarAula()
-            dao.adiciona(aula)
+            dao.adicionar(aula)
             finish()
         }
     }

@@ -45,7 +45,7 @@ class EditarAulaActivity : AppCompatActivity(R.layout.activity_editar_aula) {
 
         botaoSalvar.setOnClickListener {
             val aula = criarAula()
-            dao.atualiza(aula)
+            dao.atualizar(aula)
             finish()
         }
     }

@@ -23,4 +23,6 @@
     <color name="colorOnSecondaryDark">#FEFAE0</color>
     <color name="colorSecondaryVariantDark">#BC6C25</color>
 
+    <color name="colorDelete">#9C2727</color>
+
 </resources>

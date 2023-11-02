@@ -11,26 +11,31 @@ import android.widget.Toast
 import androidx.annotation.MenuRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.dev.quixabus.R
 import com.dev.quixabus.dao.AulasDao
 import com.dev.quixabus.databinding.ActivityAgendaBinding
 import com.dev.quixabus.model.Aula
 import com.dev.quixabus.ui.recyclerview.adapter.ListaAulasAdapter
 import com.dev.quixabus.model.DiaSemana
+import com.dev.quixabus.ui.recyclerview.adapter.SwipeGesture
 
 
 class AgendaActivity : AppCompatActivity(R.layout.activity_agenda), ListaAulasAdapter.ClickAula {
 
-    private var diaSelecionado: String? = null
-    private val dao = AulasDao()
-    private val adapter = ListaAulasAdapter(this, aulas = dao.buscaPorDia(diaSemanaSelecionado(diaSelecionado)), this)
     private val binding by lazy {
         ActivityAgendaBinding.inflate(layoutInflater)
     }
 
+    private var diaSelecionado: String? = null
+    private val dao = AulasDao()
+    private var adapter: ListaAulasAdapter = ListaAulasAdapter(this, aulas = dao.buscaPorDia(diaSemanaSelecionado(diaSelecionado)), this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         configuraRecyclerView()
+        configuraSwipe()
         configuraDropdownDiasDaSemana()
         setContentView(binding.root)
 
@@ -41,7 +46,7 @@ class AgendaActivity : AppCompatActivity(R.layout.activity_agenda), ListaAulasAd
 
     override fun onResume() {
         super.onResume()
-        adapter.atualiza(dao.buscaPorDia(diaSemanaSelecionado(diaSelecionado)))
+        adapter.atualizar(dao.buscaPorDia(diaSemanaSelecionado(diaSelecionado)))
         configuraFab()
     }
 
@@ -75,6 +80,33 @@ class AgendaActivity : AppCompatActivity(R.layout.activity_agenda), ListaAulasAd
         recyclerView.adapter = adapter
     }
 
+    private fun configuraSwipe() {
+        val recyclerView = binding.activityAgendaRv
+
+        val swipe: SwipeGesture = object : SwipeGesture(this) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
+                when(direction) {
+                    ItemTouchHelper.LEFT -> {
+                        val position = viewHolder.adapterPosition
+                        val id = adapter.buscaItem(position).id
+                        adapter.deletarItem(position)
+                        dao.deletar(id)
+                    }
+                    ItemTouchHelper.RIGHT -> {
+                        val position = viewHolder.adapterPosition
+                        val id = adapter.buscaItem(position).id
+                        adapter.deletarItem(position)
+                        dao.deletar(id)
+                    }
+                }
+            }
+        }
+
+        val touchHelper = ItemTouchHelper(swipe)
+        touchHelper.attachToRecyclerView(recyclerView)
+    }
+
     private fun configuraDropdownDiasDaSemana() {
         val diasDaSemana = listOf("Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado")
         val diaDaSemanaEditText = binding.activityAgendaSemana.editText as? AutoCompleteTextView
@@ -86,7 +118,7 @@ class AgendaActivity : AppCompatActivity(R.layout.activity_agenda), ListaAulasAd
         diaDaSemanaEditText?.onItemClickListener =
             OnItemClickListener { adapterView, view, position, id ->
                 diaSelecionado = adapterDiasDaSemana.getItem(position).toString()
-                adapter.atualiza(dao.buscaPorDia(diaSemanaSelecionado(diaSelecionado)))
+                adapter.atualizar(dao.buscaPorDia(diaSemanaSelecionado(diaSelecionado)))
             }
     }
 

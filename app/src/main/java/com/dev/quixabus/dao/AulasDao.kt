@@ -5,13 +5,18 @@ import com.dev.quixabus.model.DiaSemana
 
 class AulasDao {
 
-    fun adiciona(aula: Aula) {
+    fun adicionar(aula: Aula) {
         aulas.add(aula)
     }
 
-    fun atualiza(aula: Aula) {
+    fun atualizar(aula: Aula) {
         val index = getIndex(aula.id)
         aulas.set(index, aula)
+    }
+
+    fun deletar(id: Int) {
+        val index = getIndex(id)
+        aulas.removeAt(index)
     }
 
     fun buscaTodos() : List<Aula> {
