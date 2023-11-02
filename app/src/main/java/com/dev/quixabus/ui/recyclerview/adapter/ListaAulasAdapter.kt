@@ -9,7 +9,8 @@ import com.dev.quixabus.model.Aula
 
 class ListaAulasAdapter(
     private val context: Context,
-    aulas: List<Aula>
+    aulas: List<Aula>,
+    var clickAula: ClickAula
 ): RecyclerView.Adapter<ListaAulasAdapter.ViewHolder>() {
 
     private val aulas = aulas.toMutableList()
@@ -32,6 +33,9 @@ class ListaAulasAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val aula = aulas[position]
         holder.vincula(aula)
+        holder.cardView.setOnClickListener {
+            clickAula.clickAula(aula)
+        }
     }
 
     fun atualiza(aulas: List<Aula>) {
@@ -40,7 +44,13 @@ class ListaAulasAdapter(
         notifyDataSetChanged()
     }
 
+    interface ClickAula {
+        fun clickAula(aula: Aula)
+    }
+
     class ViewHolder(binding: ActivityAulaBinding): RecyclerView.ViewHolder(binding.root) {
+
+        val cardView = binding.activityAulaCard
 
         private val nome = binding.aulaNome
         private val horario = binding.aulaHorario

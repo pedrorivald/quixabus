@@ -5,6 +5,7 @@ enum class DiaSemana {
 }
 
 data class Aula (
+    val id: Int,
     val diaSemana: DiaSemana,
     val nome: String,
     val professor: String,

@@ -14,15 +14,16 @@ import androidx.appcompat.widget.PopupMenu
 import com.dev.quixabus.R
 import com.dev.quixabus.dao.AulasDao
 import com.dev.quixabus.databinding.ActivityAgendaBinding
+import com.dev.quixabus.model.Aula
 import com.dev.quixabus.ui.recyclerview.adapter.ListaAulasAdapter
 import com.dev.quixabus.model.DiaSemana
 
 
-class AgendaActivity : AppCompatActivity(R.layout.activity_agenda) {
+class AgendaActivity : AppCompatActivity(R.layout.activity_agenda), ListaAulasAdapter.ClickAula {
 
     private var diaSelecionado: String? = null
     private val dao = AulasDao()
-    private val adapter = ListaAulasAdapter(this, aulas = dao.buscaPorDia(diaSemanaSelecionado(diaSelecionado)))
+    private val adapter = ListaAulasAdapter(this, aulas = dao.buscaPorDia(diaSemanaSelecionado(diaSelecionado)), this)
     private val binding by lazy {
         ActivityAgendaBinding.inflate(layoutInflater)
     }
@@ -42,6 +43,10 @@ class AgendaActivity : AppCompatActivity(R.layout.activity_agenda) {
         super.onResume()
         adapter.atualiza(dao.buscaPorDia(diaSemanaSelecionado(diaSelecionado)))
         configuraFab()
+    }
+
+    override fun clickAula(aula: Aula) {
+        vaiParaEditarAula(aula.id)
     }
 
     private fun showMenu(v: View, @MenuRes menuRes: Int) {
@@ -109,6 +114,12 @@ class AgendaActivity : AppCompatActivity(R.layout.activity_agenda) {
 
     private fun vaiParaCadastrarAula() {
         val intent = Intent(this, CadastrarAulaActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun vaiParaEditarAula(id: Int) {
+        val intent = Intent(this, EditarAulaActivity::class.java)
+        intent.putExtra("id", id)
         startActivity(intent)
     }
 }
