@@ -1,8 +1,8 @@
 package com.dev.quixabus.ui.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.dev.quixabus.R
 
 class MainActivity : AppCompatActivity() {
@@ -10,11 +10,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        navigateToAgenda()
+//        navigateToAgenda()
+        navigateToItinerario()
     }
 
     private fun navigateToAgenda() {
         val intent = Intent(this, AgendaActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun navigateToItinerario() {
+        val intent = Intent(this, ItinerarioActivity::class.java)
         startActivity(intent)
     }
 }
