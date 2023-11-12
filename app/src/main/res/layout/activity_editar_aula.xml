@@ -196,7 +196,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:fontFamily="@font/montserrat_bold"
-            android:text="Salvar alterações"
+            android:text="SALVAR ALTERAÇÕES"
             style="@style/ButtonColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

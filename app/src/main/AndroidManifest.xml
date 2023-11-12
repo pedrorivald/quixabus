@@ -16,6 +16,15 @@
         android:theme="@style/Theme.Quixabus"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activity.ComentarioActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.AmigoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.PostActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.HorarioActivity"
             android:exported="false" />
         <activity

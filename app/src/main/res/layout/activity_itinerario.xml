@@ -34,7 +34,7 @@
         android:clickable="true"
         android:focusable="true"
         android:fontFamily="@font/montserrat_bold"
-        android:text="Horários"
+        android:text="HORÁRIOS"
         android:textSize="16sp"
         app:icon="@drawable/action_departure_board"
         app:iconSize="30dp"

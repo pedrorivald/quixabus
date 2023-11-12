@@ -42,6 +42,14 @@
         <item name="rippleColor">@color/colorSecondary</item>
     </style>
 
+    <style name="ButtonTextColor" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/colorSecondaryVariant</item>
+    </style>
+
+    <style name="ButtonTextDangerColor" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/colorDelete</item>
+    </style>
+
     <style name="CardBackgroundColor" parent="Widget.Material3.CardView.Elevated">
         <item name="cardBackgroundColor">@color/colorOnPrimary</item>
     </style>
