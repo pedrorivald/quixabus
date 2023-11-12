@@ -1,12 +1,17 @@
 package com.dev.quixabus.dao
 
+import com.dev.quixabus.model.Horario
 import com.dev.quixabus.model.Parada
 import com.dev.quixabus.model.TipoParada
 
 class ItinerarioDao {
 
-    fun buscaTodos(): List<Parada> {
+    fun buscaParadas(): List<Parada> {
         return paradas.toList()
+    }
+
+    fun buscaHorarios(): List<Horario> {
+        return horarios.toList()
     }
 
     companion object {
@@ -66,6 +71,57 @@ class ItinerarioDao {
                 tipo = TipoParada.CAMPUS,
                 latitude = -4.979480291253761,
                 longitude = -39.056233828167805
+            )
+        )
+
+        private val horarios = mutableListOf<Horario>(
+            Horario(
+                id = 1,
+                horario = "07:10 até 07:50",
+                quantidadeViagens = "várias",
+                responsavelOnibus = "PMQ",
+                embarque = true,
+                desembarque = false
+            ),
+            Horario(
+                id = 2,
+                horario = "09:15",
+                quantidadeViagens = "2",
+                responsavelOnibus = "UFC",
+                embarque = true,
+                desembarque = true
+            ),
+            Horario(
+                id = 3,
+                horario = "11:10 até 13:30",
+                quantidadeViagens = "várias",
+                responsavelOnibus = "PMQ",
+                embarque = true,
+                desembarque = true
+            ),
+            Horario(
+                id = 4,
+                horario = "15:15",
+                quantidadeViagens = "2",
+                responsavelOnibus = "UFC",
+                embarque = true,
+                desembarque = true
+            ),
+            Horario(
+                id = 5,
+                horario = "17:00 até 18:30",
+                quantidadeViagens = "várias",
+                responsavelOnibus = "PMQ",
+                embarque = true,
+                desembarque = true
+            ),
+            Horario(
+                id = 6,
+                horario = "21:50 até 22:10",
+                quantidadeViagens = "várias",
+                responsavelOnibus = "PMQ",
+                embarque = false,
+                desembarque = true
             )
         )
     }

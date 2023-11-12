@@ -2,6 +2,7 @@ package com.dev.quixabus.ui.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -64,6 +65,11 @@ class ItinerarioActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        configuraFab()
+    }
+
     override fun onMapReady(map: GoogleMap) {
         this.map = map
 
@@ -76,7 +82,7 @@ class ItinerarioActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun updateMarkers() {
 
-        val paradas = dao.buscaTodos()
+        val paradas = dao.buscaParadas()
 
         paradas.forEach {
 
@@ -245,5 +251,16 @@ class ItinerarioActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         popup.show()
+    }
+    private fun vaiParaHorarios() {
+        val intent = Intent(this, HorariosActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun configuraFab() {
+        val fab = binding.activityItinerarioFab
+        fab.setOnClickListener {
+            vaiParaHorarios()
+        }
     }
 }

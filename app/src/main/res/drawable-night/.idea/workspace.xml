@@ -5,22 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b3ed269-43c4-4d21-8b6a-b766f1a075fe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../../java/com/dev/quixabus/dao/ItinerarioDao.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../java/com/dev/quixabus/model/Horario.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../java/com/dev/quixabus/model/Parada.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../java/com/dev/quixabus/ui/activity/ItinerarioActivity.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../drawable/marker_bus_desembarque.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../drawable/marker_bus_embarque.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../drawable/marker_flag_circle_campus.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../drawable/marker_flag_circle_rodoviaria.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../layout/activity_itinerario.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../raw/map_style.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../raw/map_style_night.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../java/com/dev/quixabus/ui/activity/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/dev/quixabus/ui/activity/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +30,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "cidr.known.project.marker": "true",
-    "last_opened_file_path": "C:/Users/rivaldo/AndroidStudioProjects/Quixabus/app/src/main/res/drawable-night"
+    "last_opened_file_path": "C:/Users/rivaldo/AndroidStudioProjects/Quixabus"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

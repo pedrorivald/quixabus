@@ -5,6 +5,6 @@ data class Horario (
     val horario: String,
     val quantidadeViagens: String,
     val responsavelOnibus: String,
-    val campusParaRodoviaria: Boolean,
-    val rodoviariaParaCampus: Boolean
+    val embarque: Boolean,
+    val desembarque: Boolean
 )
