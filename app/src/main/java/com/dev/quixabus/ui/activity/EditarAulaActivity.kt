@@ -1,15 +1,16 @@
 package com.dev.quixabus.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import androidx.appcompat.app.AppCompatActivity
 import com.dev.quixabus.R
 import com.dev.quixabus.dao.AulasDao
 import com.dev.quixabus.databinding.ActivityEditarAulaBinding
 import com.dev.quixabus.model.Aula
 import com.dev.quixabus.model.DiaSemana
+import com.dev.quixabus.util.TopBar
 
 class EditarAulaActivity : AppCompatActivity(R.layout.activity_editar_aula) {
 
@@ -36,6 +37,7 @@ class EditarAulaActivity : AppCompatActivity(R.layout.activity_editar_aula) {
 
         configuraBotaoSalvar()
         configuraDropdownDiasDaSemana()
+        TopBar().configura(supportFragmentManager, R.id.activity_editar_aula_fragment_top_bar)
 
         setContentView(binding.root)
     }

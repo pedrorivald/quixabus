@@ -1,16 +1,15 @@
 package com.dev.quixabus.ui.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import android.widget.Toast
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.Fragment
 import com.dev.quixabus.R
 import com.dev.quixabus.databinding.FragmentTopBarBinding
+import com.dev.quixabus.util.Navigate
 import com.google.android.material.appbar.MaterialToolbar
 
 
@@ -20,21 +19,12 @@ class TopBarFragment : Fragment(R.layout.fragment_top_bar) {
         FragmentTopBarBinding.inflate(layoutInflater)
     }
 
+    private val navigate = Navigate()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val topAppBar: MaterialToolbar = view.findViewById<MaterialToolbar>(R.id.topAppBar)
-
         topAppBar.setNavigationOnClickListener { showPopupMenu(topAppBar) }
-
-        topAppBar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.top_app_bar_action_perfil -> {
-                    Toast.makeText(requireContext(), "Item do Menu Clicado", Toast.LENGTH_SHORT).show()
-                    true
-                }
-                else -> false
-            }
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -45,13 +35,21 @@ class TopBarFragment : Fragment(R.layout.fragment_top_bar) {
         val popupMenu = PopupMenu(requireContext(), view)
         popupMenu.menuInflater.inflate(R.menu.menus, popupMenu.menu)
 
-        popupMenu.setOnMenuItemClickListener { item ->
+        popupMenu.setOnMenuItemClickListener { item: MenuItem ->
             when (item.itemId) {
                 R.id.menus_action_agenda -> {
-                    Toast.makeText(requireContext(), "Item do Menu Clicado", Toast.LENGTH_SHORT).show()
-                    return@setOnMenuItemClickListener true
+                    navigate.toAgenda(view.context)
+                    true
                 }
-                else -> return@setOnMenuItemClickListener false
+                R.id.menus_action_itinerario -> {
+                    navigate.toItinerario(view.context)
+                    true
+                }
+                R.id.menus_action_links -> {
+                    navigate.toLinksUteis(view.context)
+                    true
+                }
+                else -> false
             }
         }
 

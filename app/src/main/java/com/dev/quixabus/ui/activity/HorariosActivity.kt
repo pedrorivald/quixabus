@@ -6,6 +6,7 @@ import com.dev.quixabus.R
 import com.dev.quixabus.dao.ItinerarioDao
 import com.dev.quixabus.databinding.ActivityHorariosBinding
 import com.dev.quixabus.ui.recyclerview.adapter.ListaHorarioAdapter
+import com.dev.quixabus.util.TopBar
 
 class HorariosActivity : AppCompatActivity(R.layout.activity_horarios) {
 
@@ -19,6 +20,7 @@ class HorariosActivity : AppCompatActivity(R.layout.activity_horarios) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         configuraRecyclerView()
+        TopBar().configura(supportFragmentManager, R.id.activity_horarios_fragment_top_bar)
         setContentView(binding.root)
     }
 

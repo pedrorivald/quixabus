@@ -1,15 +1,16 @@
 package com.dev.quixabus.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import androidx.appcompat.app.AppCompatActivity
 import com.dev.quixabus.R
-import com.dev.quixabus.model.DiaSemana
-import android.widget.AdapterView.OnItemClickListener
 import com.dev.quixabus.dao.AulasDao
 import com.dev.quixabus.databinding.ActivityCadastrarAulaBinding
 import com.dev.quixabus.model.Aula
+import com.dev.quixabus.model.DiaSemana
+import com.dev.quixabus.util.TopBar
 
 class CadastrarAulaActivity : AppCompatActivity(R.layout.activity_cadastrar_aula) {
 
@@ -22,6 +23,7 @@ class CadastrarAulaActivity : AppCompatActivity(R.layout.activity_cadastrar_aula
         super.onCreate(savedInstanceState)
         configuraBotaoSalvar()
         configuraDropdownDiasDaSemana()
+        TopBar().configura(supportFragmentManager, R.id.activity_cadastrar_aula_fragment_top_bar)
         setContentView(binding.root)
     }
 

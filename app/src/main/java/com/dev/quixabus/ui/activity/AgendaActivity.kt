@@ -17,9 +17,10 @@ import com.dev.quixabus.R
 import com.dev.quixabus.dao.AulasDao
 import com.dev.quixabus.databinding.ActivityAgendaBinding
 import com.dev.quixabus.model.Aula
-import com.dev.quixabus.ui.recyclerview.adapter.ListaAulasAdapter
 import com.dev.quixabus.model.DiaSemana
+import com.dev.quixabus.ui.recyclerview.adapter.ListaAulasAdapter
 import com.dev.quixabus.ui.recyclerview.adapter.SwipeGesture
+import com.dev.quixabus.util.TopBar
 
 
 class AgendaActivity : AppCompatActivity(R.layout.activity_agenda), ListaAulasAdapter.ClickAula {
@@ -37,11 +38,8 @@ class AgendaActivity : AppCompatActivity(R.layout.activity_agenda), ListaAulasAd
         configuraRecyclerView()
         configuraSwipe()
         configuraDropdownDiasDaSemana()
+        TopBar().configura(supportFragmentManager, R.id.activity_agenda_fragment_top_bar)
         setContentView(binding.root)
-
-        binding.activityAgendaFragmentTopBar.topAppBar.setNavigationOnClickListener {
-            showMenu(it, R.menu.menus)
-        }
     }
 
     override fun onResume() {
@@ -73,6 +71,10 @@ class AgendaActivity : AppCompatActivity(R.layout.activity_agenda), ListaAulasAd
         }
 
         popup.show()
+    }
+
+    private fun navagarMenu() {
+
     }
 
     private fun configuraRecyclerView() {

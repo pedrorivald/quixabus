@@ -9,12 +9,13 @@
     android:fillViewport="true"
     tools:context=".ui.activity.ItinerarioActivity">
 
-    <include
-        layout="@layout/fragment_top_bar"
+    <FrameLayout
         android:id="@+id/activity_itinerario_fragment_top_bar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"

@@ -23,6 +23,7 @@ import com.dev.quixabus.R
 import com.dev.quixabus.dao.ItinerarioDao
 import com.dev.quixabus.databinding.ActivityItinerarioBinding
 import com.dev.quixabus.model.TipoParada
+import com.dev.quixabus.util.TopBar
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -52,6 +53,7 @@ class ItinerarioActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        TopBar().configura(supportFragmentManager, R.id.activity_itinerario_fragment_top_bar)
         setContentView(binding.root)
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
@@ -59,10 +61,6 @@ class ItinerarioActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-        binding.activityItinerarioFragmentTopBar.topAppBar.setNavigationOnClickListener {
-            showMenu(it, R.menu.menus)
-        }
     }
 
     override fun onResume() {
