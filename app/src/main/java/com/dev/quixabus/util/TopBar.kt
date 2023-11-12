@@ -15,9 +15,8 @@ class TopBar {
         fragmentTransaction = fragmentManager.beginTransaction()
 
         fragmentTransaction
-            .replace(id, topBarFragment)
-            .setReorderingAllowed(true)
-            .addToBackStack(null)
+            .add(id, topBarFragment)
+            .disallowAddToBackStack()
             .commit()
     }
 }
