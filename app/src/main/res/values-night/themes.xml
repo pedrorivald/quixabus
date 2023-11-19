@@ -40,6 +40,7 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:backgroundTint">@color/colorSecondaryVariantDark</item>
         <item name="rippleColor">@color/colorSecondaryDark</item>
+        <item name="iconTint">@color/white</item>
     </style>
 
     <style name="ButtonTextColor" parent="Widget.Material3.Button.TextButton">

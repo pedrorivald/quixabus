@@ -5,6 +5,7 @@ import android.content.Intent
 import com.dev.quixabus.ui.activity.AgendaActivity
 import com.dev.quixabus.ui.activity.FeedActivity
 import com.dev.quixabus.ui.activity.ItinerarioActivity
+import com.dev.quixabus.ui.activity.LinksActivity
 
 class Navigate {
 
@@ -19,7 +20,7 @@ class Navigate {
     }
 
     fun toLinksUteis(context: Context) {
-        val intent = Intent(context, AgendaActivity::class.java)
+        val intent = Intent(context, LinksActivity::class.java)
         context.startActivity(intent)
     }
 
