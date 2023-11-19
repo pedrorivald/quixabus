@@ -10,7 +10,8 @@ import com.dev.quixabus.model.FeedItem
 class FeedAdapter(
     private val context: Context,
     feedItems: List<FeedItem>,
-    var clickFeedItem: ClickFeedItem
+    var clickFeedItem: ClickFeedItem,
+    var clickVerComentarios: ClickVerComentarios
 ): RecyclerView.Adapter<FeedAdapter.ViewHolder>() {
 
     private val feedItems = feedItems.toMutableList()
@@ -37,6 +38,10 @@ class FeedAdapter(
         holder.cardView.setOnClickListener {
             clickFeedItem.clickFeedItem(feedItem)
         }
+
+        holder.btnComentarios.setOnClickListener{
+            clickVerComentarios.clickVerComentarios(feedItem)
+        }
     }
 
     fun atualizar(feedItems: List<FeedItem>) {
@@ -58,9 +63,14 @@ class FeedAdapter(
         fun clickFeedItem(feedItem: FeedItem)
     }
 
+    interface ClickVerComentarios {
+        fun clickVerComentarios(feedItem: FeedItem)
+    }
+
     class ViewHolder(binding: ActivityPostBinding): RecyclerView.ViewHolder(binding.root) {
 
         val cardView = binding.activityPostCard
+        val btnComentarios = binding.postVerComentariosBtn
 
         private val usuario = binding.postUsuario
         private val data = binding.postData

@@ -17,6 +17,12 @@
         android:theme="@style/Theme.Quixabus"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activity.CadastrarComentarioActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.ComentariosActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.LinksActivity"
             android:exported="false" />
         <activity

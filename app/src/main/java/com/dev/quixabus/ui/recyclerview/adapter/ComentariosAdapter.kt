@@ -5,12 +5,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.quixabus.databinding.ActivityComentarioBinding
-import com.dev.quixabus.model.Comentario
+import com.dev.quixabus.model.ComentarioItem
 
 class ComentariosAdapter(
     private val context: Context,
-    comentarios: List<Comentario>,
-    var clickAula: ClickComentario
+    comentarios: List<ComentarioItem>
 ): RecyclerView.Adapter<ComentariosAdapter.ViewHolder>() {
 
     private val comentarios = comentarios.toMutableList()
@@ -33,13 +32,9 @@ class ComentariosAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val comentario = comentarios[position]
         holder.vincula(comentario)
-
-        holder.cardView.setOnClickListener {
-            clickAula.clickComentario(comentario)
-        }
     }
 
-    fun atualizar(comentarios: List<Comentario>) {
+    fun atualizar(comentarios: List<ComentarioItem>) {
         this.comentarios.clear()
         this.comentarios.addAll(comentarios)
         notifyDataSetChanged()
@@ -50,20 +45,22 @@ class ComentariosAdapter(
         notifyDataSetChanged()
     }
 
-    fun buscaItem(index: Int): Comentario {
+    fun buscaItem(index: Int): ComentarioItem {
         return comentarios[index];
-    }
-
-    interface ClickComentario {
-        fun clickComentario(comentario: Comentario)
     }
 
     class ViewHolder(binding: ActivityComentarioBinding): RecyclerView.ViewHolder(binding.root) {
 
         val cardView = binding.activityComentarioCard
 
-        fun vincula(comentario: Comentario) {
+        private val usuario = binding.comentarioUsuario
+        private val data = binding.comentarioData
+        private val texto = binding.comentarioTexto
 
+        fun vincula(comentario: ComentarioItem) {
+            usuario.text = comentario.usuario.nome
+            data.text = comentario.comentario.data
+            texto.text = comentario.comentario.texto
         }
 
     }

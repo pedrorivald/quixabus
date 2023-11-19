@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.quixabus.R
+import com.dev.quixabus.auth.Auth
 import com.dev.quixabus.dao.FeedDao
 import com.dev.quixabus.dao.PostDao
 import com.dev.quixabus.databinding.ActivityFeedBinding
@@ -14,15 +15,16 @@ import com.dev.quixabus.ui.recyclerview.adapter.FeedAdapter
 import com.dev.quixabus.ui.recyclerview.adapter.SwipeGesture
 import com.dev.quixabus.util.TopBar
 
-class FeedActivity : AppCompatActivity(R.layout.activity_feed), FeedAdapter.ClickFeedItem {
+class FeedActivity : AppCompatActivity(R.layout.activity_feed), FeedAdapter.ClickFeedItem, FeedAdapter.ClickVerComentarios {
 
     private val binding by lazy {
         ActivityFeedBinding.inflate(layoutInflater)
     }
 
     private val dao = FeedDao()
+    private val auth = Auth()
     private val postDao = PostDao()
-    private var adapter: FeedAdapter = FeedAdapter(this, feedItems = dao.buscaFeed(), this)
+    private var adapter: FeedAdapter = FeedAdapter(this, feedItems = dao.buscaFeed(auth.usuarioLogado.id), this, this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,12 +36,16 @@ class FeedActivity : AppCompatActivity(R.layout.activity_feed), FeedAdapter.Clic
 
     override fun onResume() {
         super.onResume()
-        adapter.atualizar(dao.buscaFeed())
+        adapter.atualizar(dao.buscaFeed(auth.usuarioLogado.id))
         configuraFab()
     }
 
     override fun clickFeedItem(feedItem: FeedItem) {
         vaiParaEditarPost(feedItem.post.id)
+    }
+
+    override fun clickVerComentarios(feedItem: FeedItem) {
+        vaiParaComentarios(feedItem.post.id)
     }
 
     private fun configuraRecyclerView() {
@@ -89,6 +95,12 @@ class FeedActivity : AppCompatActivity(R.layout.activity_feed), FeedAdapter.Clic
     private fun vaiParaEditarPost(id: Int) {
         val intent = Intent(this, EditarPostActivity::class.java)
         intent.putExtra("id", id)
+        startActivity(intent)
+    }
+
+    private fun vaiParaComentarios(idPost: Int) {
+        val intent = Intent(this, ComentariosActivity::class.java)
+        intent.putExtra("idPost", idPost)
         startActivity(intent)
     }
 }
