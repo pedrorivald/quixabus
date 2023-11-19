@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.dev.quixabus.R
 import com.dev.quixabus.dao.ItinerarioDao
 import com.dev.quixabus.databinding.ActivityHorariosBinding
-import com.dev.quixabus.ui.recyclerview.adapter.ListaHorarioAdapter
+import com.dev.quixabus.ui.recyclerview.adapter.HorariosAdapter
 import com.dev.quixabus.util.TopBar
 
 class HorariosActivity : AppCompatActivity(R.layout.activity_horarios) {
@@ -15,7 +15,7 @@ class HorariosActivity : AppCompatActivity(R.layout.activity_horarios) {
     }
 
     private val dao = ItinerarioDao()
-    private var adapter: ListaHorarioAdapter = ListaHorarioAdapter(this, horarios = dao.buscaHorarios())
+    private var adapter: HorariosAdapter = HorariosAdapter(this, horarios = dao.buscaHorarios())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -3,6 +3,9 @@ package com.dev.quixabus.dao
 import com.dev.quixabus.model.Post
 
 class PostDao {
+
+    val comentarioDao = ComentarioDao()
+
     fun adicionar(post: Post) {
         posts.add(post)
     }
@@ -13,6 +16,12 @@ class PostDao {
     }
 
     fun deletar(id: Int) {
+        //deletar comentarios do post
+        val comentarios = comentarioDao.buscaPorIdPost(id)
+        comentarios.forEach {
+            comentarioDao.deletar(it.id)
+        }
+
         val index = getIndex(id)
         posts.removeAt(index)
     }
@@ -44,7 +53,7 @@ class PostDao {
             Post(
                 id = 2,
                 texto = "Post 2",
-                idUsuario = 1,
+                idUsuario = 3,
                 data = "10/11/2023"
             ),
             Post(
@@ -56,7 +65,7 @@ class PostDao {
             Post(
                 id = 4,
                 texto = "Post 4",
-                idUsuario = 1,
+                idUsuario = 2,
                 data = "10/11/2023"
             ),
             Post(
@@ -68,7 +77,7 @@ class PostDao {
             Post(
                 id = 6,
                 texto = "Post 6",
-                idUsuario = 1,
+                idUsuario = 4,
                 data = "10/11/2023"
             )
         )

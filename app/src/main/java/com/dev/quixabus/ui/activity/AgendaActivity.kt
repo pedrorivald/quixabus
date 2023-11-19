@@ -2,15 +2,10 @@ package com.dev.quixabus.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
-import android.view.View
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.Toast
-import androidx.annotation.MenuRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.quixabus.R
@@ -18,12 +13,12 @@ import com.dev.quixabus.dao.AulasDao
 import com.dev.quixabus.databinding.ActivityAgendaBinding
 import com.dev.quixabus.model.Aula
 import com.dev.quixabus.model.DiaSemana
-import com.dev.quixabus.ui.recyclerview.adapter.ListaAulasAdapter
+import com.dev.quixabus.ui.recyclerview.adapter.AulasAdapter
 import com.dev.quixabus.ui.recyclerview.adapter.SwipeGesture
 import com.dev.quixabus.util.TopBar
 
 
-class AgendaActivity : AppCompatActivity(R.layout.activity_agenda), ListaAulasAdapter.ClickAula {
+class AgendaActivity : AppCompatActivity(R.layout.activity_agenda), AulasAdapter.ClickAula {
 
     private val binding by lazy {
         ActivityAgendaBinding.inflate(layoutInflater)
@@ -31,7 +26,7 @@ class AgendaActivity : AppCompatActivity(R.layout.activity_agenda), ListaAulasAd
 
     private var diaSelecionado: String? = null
     private val dao = AulasDao()
-    private var adapter: ListaAulasAdapter = ListaAulasAdapter(this, aulas = dao.buscaPorDia(diaSemanaSelecionado(diaSelecionado)), this)
+    private var adapter: AulasAdapter = AulasAdapter(this, aulas = dao.buscaPorDia(diaSemanaSelecionado(diaSelecionado)), this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,31 +45,6 @@ class AgendaActivity : AppCompatActivity(R.layout.activity_agenda), ListaAulasAd
 
     override fun clickAula(aula: Aula) {
         vaiParaEditarAula(aula.id)
-    }
-
-    private fun showMenu(v: View, @MenuRes menuRes: Int) {
-        val popup = PopupMenu(this, v)
-        popup.menuInflater.inflate(menuRes, popup.menu)
-
-        popup.setOnMenuItemClickListener { menuItem: MenuItem ->
-            when (menuItem.itemId) {
-                R.id.menus_action_agenda -> {
-                    Toast.makeText(this, "Item do Menu Clicado", Toast.LENGTH_SHORT).show()
-                    true
-                }
-                else -> false
-            }
-        }
-
-        popup.setOnDismissListener {
-            // Respond to popup being dismissed.
-        }
-
-        popup.show()
-    }
-
-    private fun navagarMenu() {
-
     }
 
     private fun configuraRecyclerView() {

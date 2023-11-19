@@ -16,6 +16,15 @@
         android:theme="@style/Theme.Quixabus"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activity.CadastrarPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.EditarPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.FeedActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.ComentarioActivity"
             android:exported="false" />
         <activity

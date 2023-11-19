@@ -3,6 +3,7 @@ package com.dev.quixabus.util
 import android.content.Context
 import android.content.Intent
 import com.dev.quixabus.ui.activity.AgendaActivity
+import com.dev.quixabus.ui.activity.FeedActivity
 import com.dev.quixabus.ui.activity.ItinerarioActivity
 
 class Navigate {
@@ -23,7 +24,7 @@ class Navigate {
     }
 
     fun toFeed(context: Context) {
-        val intent = Intent(context, AgendaActivity::class.java)
+        val intent = Intent(context, FeedActivity::class.java)
         context.startActivity(intent)
     }
 

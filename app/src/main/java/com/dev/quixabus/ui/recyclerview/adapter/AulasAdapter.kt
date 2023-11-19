@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dev.quixabus.databinding.ActivityAulaBinding
 import com.dev.quixabus.model.Aula
 
-class ListaAulasAdapter(
+class AulasAdapter(
     private val context: Context,
     aulas: List<Aula>,
     var clickAula: ClickAula
-): RecyclerView.Adapter<ListaAulasAdapter.ViewHolder>() {
+): RecyclerView.Adapter<AulasAdapter.ViewHolder>() {
 
     private val aulas = aulas.toMutableList()
 

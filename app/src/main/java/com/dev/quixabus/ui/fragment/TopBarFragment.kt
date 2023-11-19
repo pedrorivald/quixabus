@@ -37,6 +37,10 @@ class TopBarFragment : Fragment(R.layout.fragment_top_bar) {
 
         popupMenu.setOnMenuItemClickListener { item: MenuItem ->
             when (item.itemId) {
+                R.id.menus_action_feed -> {
+                    navigate.toFeed(view.context)
+                    true
+                }
                 R.id.menus_action_agenda -> {
                     navigate.toAgenda(view.context)
                     true

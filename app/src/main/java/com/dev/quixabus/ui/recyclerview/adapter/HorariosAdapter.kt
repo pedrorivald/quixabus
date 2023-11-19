@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dev.quixabus.databinding.ActivityHorarioBinding
 import com.dev.quixabus.model.Horario
 
-class ListaHorarioAdapter(
+class HorariosAdapter(
     private val context: Context,
     horarios: List<Horario>
-): RecyclerView.Adapter<ListaHorarioAdapter.ViewHolder>() {
+): RecyclerView.Adapter<HorariosAdapter.ViewHolder>() {
 
     private val horarios = horarios.toMutableList()
 
