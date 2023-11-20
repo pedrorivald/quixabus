@@ -8,6 +8,9 @@
     <item android:id="@+id/menus_action_itinerario"
         android:title="Itinerário" />
 
+    <item android:id="@+id/menus_action_amigos"
+        android:title="Amigos" />
+
     <item android:id="@+id/menus_action_links"
         android:title="Links úteis" />
 </menu>

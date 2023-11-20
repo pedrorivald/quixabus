@@ -1,25 +1,15 @@
 package com.dev.quixabus.dao
 
-import com.dev.quixabus.model.Amigo
 import com.dev.quixabus.model.Usuario
 
 class UsuarioDao {
-
-    val amigosDao = AmigosDao()
 
     fun buscaPorId(id: Int): Usuario {
         return usuarios.filter { it.id == id }[0]
     }
 
-    fun buscaAmigos(id: Int): List<Usuario> {
-        val amigos: List<Amigo> = amigosDao.buscaPorIdUsuarioSolicitante(id)
-        val list = mutableListOf<Usuario>()
-
-        amigos.forEach {
-            list.add(buscaPorId(it.idUsuarioSolicitado))
-        }
-
-        return list.toList()
+    fun buscaPorEmail(email: String): Usuario {
+        return usuarios.filter { it.email == email }[0]
     }
 
     companion object {
@@ -32,17 +22,22 @@ class UsuarioDao {
             Usuario(
                 id = 2,
                 nome = "Tiago",
-                email = "pedro@gmail.com"
+                email = "tiago@gmail.com"
             ),
             Usuario(
                 id = 3,
                 nome = "João",
-                email = "pedro@gmail.com"
+                email = "joao@gmail.com"
             ),
             Usuario(
                 id = 4,
                 nome = "Marcos",
-                email = "pedro@gmail.com"
+                email = "marcos@gmail.com"
+            ),
+            Usuario(
+                id = 5,
+                nome = "Lucas",
+                email = "lucas@gmail.com"
             ),
         )
     }

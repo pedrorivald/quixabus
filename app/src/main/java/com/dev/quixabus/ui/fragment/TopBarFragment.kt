@@ -41,6 +41,10 @@ class TopBarFragment : Fragment(R.layout.fragment_top_bar) {
                     navigate.toFeed(view.context)
                     true
                 }
+                R.id.menus_action_amigos -> {
+                    navigate.toAmigos(view.context)
+                    true
+                }
                 R.id.menus_action_agenda -> {
                     navigate.toAgenda(view.context)
                     true

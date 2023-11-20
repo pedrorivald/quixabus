@@ -1,8 +1,12 @@
 package com.dev.quixabus.dao
 
 import com.dev.quixabus.model.Amigo
+import com.dev.quixabus.model.AmigoItem
+import com.dev.quixabus.model.Usuario
 
 class AmigosDao {
+
+    private val usuarioDao = UsuarioDao()
 
     fun adicionar(amigo: Amigo) {
         amigos.add(amigo)
@@ -15,6 +19,31 @@ class AmigosDao {
 
     fun buscaPorIdUsuarioSolicitante(idUsuarioSolicitante: Int): List<Amigo> {
         return amigos.filter { it.idUsuarioSolicitante == idUsuarioSolicitante }
+    }
+
+    fun buscaAmigosItems(idUsuario: Int): List<AmigoItem> {
+        val usuario = usuarioDao.buscaPorId(idUsuario)
+
+        val amigos = buscaPorIdUsuarioSolicitante(idUsuario)
+        val amigosItems = mutableListOf<AmigoItem>()
+
+        amigos.forEach {
+            val usuarioSolicitado = usuarioDao.buscaPorId(it.idUsuarioSolicitado)
+            amigosItems.add(AmigoItem(usuarioSolicitante = usuario, usuarioSolicitado = usuarioSolicitado))
+        }
+
+        return amigosItems.toList()
+    }
+
+    fun buscaAmigos(id: Int): List<Usuario> {
+        val amigos: List<Amigo> = buscaPorIdUsuarioSolicitante(id)
+        val list = mutableListOf<Usuario>()
+
+        amigos.forEach {
+            list.add(usuarioDao.buscaPorId(it.idUsuarioSolicitado))
+        }
+
+        return list.toList()
     }
 
     companion object {

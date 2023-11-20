@@ -8,11 +8,12 @@ class FeedDao {
 
     val postDao = PostDao()
     val usuarioDao = UsuarioDao()
+    val amigosDao = AmigosDao()
     val comentarioDao = ComentarioDao()
 
     //posts dos amigos e do proprio usuario
     fun buscaFeed(idUsuario: Int): List<FeedItem> {
-        val amigos = usuarioDao.buscaAmigos(idUsuario)
+        val amigos = amigosDao.buscaAmigos(idUsuario)
         val posts: List<Post> = postDao.buscaTodos()
 
         val feed = mutableListOf<FeedItem>()
