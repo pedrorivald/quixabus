@@ -5,14 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import com.dev.quixabus.R
 import com.dev.quixabus.dao.PostDao
 import com.dev.quixabus.databinding.ActivityEditarPostBinding
-import com.dev.quixabus.model.Post
+import com.dev.quixabus.model.PostOld
 import com.dev.quixabus.util.TopBar
 
 class EditarPostActivity : AppCompatActivity(R.layout.activity_editar_post) {
 
     private var id: Int? = null
     private val dao = PostDao()
-    private var post: Post? = null
+    private var post: PostOld? = null
     private val binding by lazy {
         ActivityEditarPostBinding.inflate(layoutInflater)
     }
@@ -23,7 +23,7 @@ class EditarPostActivity : AppCompatActivity(R.layout.activity_editar_post) {
         id = dados?.getInt("id")
 
         if (id != null) {
-            post = dao.buscaPorId(id!!)
+//            post = dao.buscarPorId(id!!)
         }
 
         if (post != null) {
@@ -46,16 +46,16 @@ class EditarPostActivity : AppCompatActivity(R.layout.activity_editar_post) {
         }
     }
 
-    private fun configuraPost(post: Post) {
+    private fun configuraPost(post: PostOld) {
         binding.activityEditarPostTexto.setText(post.texto)
     }
 
-    private fun criarPost(): Post {
+    private fun criarPost(): PostOld {
         val post = post!!
         val campoTexto = binding.activityEditarPostTexto
         val texto = campoTexto.text.toString()
 
-        return Post(
+        return PostOld(
             id = post.id,
             idUsuario = post.idUsuario,
             data = post.data,

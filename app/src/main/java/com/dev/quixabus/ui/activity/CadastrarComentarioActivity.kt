@@ -3,10 +3,9 @@ package com.dev.quixabus.ui.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.dev.quixabus.R
-import com.dev.quixabus.auth.Auth
 import com.dev.quixabus.dao.ComentarioDao
 import com.dev.quixabus.databinding.ActivityCadastrarComentarioBinding
-import com.dev.quixabus.model.Comentario
+import com.dev.quixabus.model.ComentarioOld
 import com.dev.quixabus.util.TopBar
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -42,17 +41,16 @@ class CadastrarComentarioActivity : AppCompatActivity(R.layout.activity_cadastra
         }
     }
 
-    private fun criarComentario(): Comentario {
+    private fun criarComentario(): ComentarioOld {
         val campoTexto = binding.activityCadastrarComentarioTexto
         val texto = campoTexto.text.toString()
 
-        val auth = Auth()
-        val idUsuario = auth.usuarioLogado.id
+        val idUsuario = 1
 
         val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         val data = sdf.format(Date())
 
-        return Comentario(
+        return ComentarioOld(
             id = (0..9999).random(),
             idUsuario = idUsuario,
             idPost = idPost!!,

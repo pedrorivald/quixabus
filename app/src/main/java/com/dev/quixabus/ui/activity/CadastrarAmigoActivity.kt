@@ -1,20 +1,18 @@
 package com.dev.quixabus.ui.activity
 
+import android.content.Context
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dev.quixabus.R
-import com.dev.quixabus.auth.Auth
 import com.dev.quixabus.dao.AmigosDao
-import com.dev.quixabus.dao.UsuarioDao
 import com.dev.quixabus.databinding.ActivityCadastrarAmigoBinding
-import com.dev.quixabus.model.Amigo
 import com.dev.quixabus.util.TopBar
 
 class CadastrarAmigoActivity : AppCompatActivity(R.layout.activity_cadastrar_amigo) {
 
     private val dao = AmigosDao()
-    private val usuarioDao = UsuarioDao()
-    private val auth = Auth()
     private val binding by lazy {
         ActivityCadastrarAmigoBinding.inflate(layoutInflater)
     }
@@ -29,24 +27,31 @@ class CadastrarAmigoActivity : AppCompatActivity(R.layout.activity_cadastrar_ami
         val botaoSalvar = binding.activityCadastrarAmigoBotaoSalvar
 
         botaoSalvar.setOnClickListener {
-            val amigo = criarAmigo()
-            dao.adicionar(amigo)
-            finish()
+            criarAmigo()
         }
     }
 
-    private fun criarAmigo(): Amigo {
+    private fun criarAmigo() {
         val campoEmail = binding.activityCadastrarAmigoEmail
-        val email = campoEmail.text.toString()
+        val email = campoEmail.text.toString().trim()
 
-        val idUsuarioSolicitante = auth.usuarioLogado.id
+        if(email.isNotEmpty()) {
+            dao.salvar(email) { sucesso ->
+                if(sucesso) {
+                    campoEmail.setText("")
+                    hideKeyboard()
+                    Toast.makeText(this, "Amizade realizada!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Não foi possível concluir a solicitação, tente novamente mais tarde.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            Toast.makeText(this, "Preencha o campo de email.", Toast.LENGTH_SHORT).show()
+        }
+    }
 
-        val idUsuarioSolicitado = usuarioDao.buscaPorEmail(email).id
-
-        return Amigo(
-            id = (0..9999).random(),
-            idUsuarioSolicitante = idUsuarioSolicitante,
-            idUsuarioSolicitado = idUsuarioSolicitado
-        )
+    fun hideKeyboard() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken , 0)
     }
 }

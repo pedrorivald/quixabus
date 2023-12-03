@@ -3,10 +3,12 @@ package com.dev.quixabus.ui.auth
 import android.content.Context
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.dev.quixabus.R
 import com.dev.quixabus.databinding.ActivityRecuperarSenhaBinding
+import com.dev.quixabus.util.FirebaseHelper
 import com.dev.quixabus.util.Navigate
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -42,7 +44,7 @@ class RecuperarSenhaActivity : AppCompatActivity(R.layout.activity_recuperar_sen
 
             recoverAccountUser(email)
         } else {
-
+            Toast.makeText(this, "Informe seu email!", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -50,9 +52,12 @@ class RecuperarSenhaActivity : AppCompatActivity(R.layout.activity_recuperar_sen
         auth.sendPasswordResetEmail(email)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+                    Toast.makeText(this, "Enviamos um link de confirmação para seu Email.", Toast.LENGTH_SHORT).show()
                     navigate.toLogin(this)
                 } else {
-
+                    Toast.makeText(this, FirebaseHelper.validError(
+                        task.exception?.message ?: ""
+                    ), Toast.LENGTH_SHORT).show()
                 }
 
                 binding.activityRecuperarProgressBar.isVisible = false

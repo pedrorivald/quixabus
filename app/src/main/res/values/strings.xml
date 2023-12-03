@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">Quixabus</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_itinerario">ItinerarioActivity</string>
+
+    <!-- Global -->
+    <string name="erro_global">Ocorreu um erro, por favor tente novamente mais tarde.</string>
+
+    <!--    Erros Firebase Authentication-->
+    <string name="nenhuma_conta_encontrada">Nenhuma conta encontrada com este e-mail.</string>
+    <string name="insira_email_valido">Insira um e-mail válido.</string>
+    <string name="senha_invalida">Senha inválida, tente novamente.</string>
+    <string name="email_existente">Este e-mail já está em uso.</string>
+    <string name="insira_uma_senha_forte">Insira uma senha mais forte.</string>
 </resources>

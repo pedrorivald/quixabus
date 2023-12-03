@@ -6,9 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.quixabus.R
-import com.dev.quixabus.auth.Auth
 import com.dev.quixabus.dao.FeedDao
-import com.dev.quixabus.dao.PostDao
 import com.dev.quixabus.databinding.ActivityFeedBinding
 import com.dev.quixabus.model.FeedItem
 import com.dev.quixabus.ui.recyclerview.adapter.FeedAdapter
@@ -22,22 +20,36 @@ class FeedActivity : AppCompatActivity(R.layout.activity_feed), FeedAdapter.Clic
     }
 
     private val dao = FeedDao()
-    private val auth = Auth()
-    private val postDao = PostDao()
-    private var adapter: FeedAdapter = FeedAdapter(this, feedItems = dao.buscaFeed(auth.usuarioLogado.id), this, this)
+    private lateinit var adapter: FeedAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        configuraRecyclerView()
         configuraSwipe()
         TopBar().configura(supportFragmentManager, R.id.activity_feed_fragment_top_bar)
+        init()
         setContentView(binding.root)
     }
 
     override fun onResume() {
         super.onResume()
-        adapter.atualizar(dao.buscaFeed(auth.usuarioLogado.id))
+        atualizarAdapter()
         configuraFab()
+    }
+
+    private fun init() {
+        dao.buscaFeed { feed ->
+            if(feed != null) {
+                configuraRecyclerView(feed)
+            }
+        }
+    }
+
+    fun atualizarAdapter() {
+        dao.buscaFeed { feed ->
+            if(feed != null) {
+                adapter.atualizar(feed)
+            }
+        }
     }
 
     override fun clickFeedItem(feedItem: FeedItem) {
@@ -48,7 +60,8 @@ class FeedActivity : AppCompatActivity(R.layout.activity_feed), FeedAdapter.Clic
         vaiParaComentarios(feedItem.post.id)
     }
 
-    private fun configuraRecyclerView() {
+    private fun configuraRecyclerView(feed: List<FeedItem>) {
+        adapter = FeedAdapter(this, feedItems = feed, this, this)
         val recyclerView = binding.activityFeedRv
         recyclerView.adapter = adapter
     }
@@ -64,13 +77,13 @@ class FeedActivity : AppCompatActivity(R.layout.activity_feed), FeedAdapter.Clic
                         val position = viewHolder.adapterPosition
                         val id = adapter.buscaItem(position).post.id
                         adapter.deletarItem(position)
-                        postDao.deletar(id)
+//                        postDao.deletar(id)
                     }
                     ItemTouchHelper.RIGHT -> {
                         val position = viewHolder.adapterPosition
                         val id = adapter.buscaItem(position).post.id
                         adapter.deletarItem(position)
-                        postDao.deletar(id)
+//                        postDao.deletar(id)
                     }
                 }
             }
@@ -92,13 +105,13 @@ class FeedActivity : AppCompatActivity(R.layout.activity_feed), FeedAdapter.Clic
         startActivity(intent)
     }
 
-    private fun vaiParaEditarPost(id: Int) {
+    private fun vaiParaEditarPost(id: String) {
         val intent = Intent(this, EditarPostActivity::class.java)
         intent.putExtra("id", id)
         startActivity(intent)
     }
 
-    private fun vaiParaComentarios(idPost: Int) {
+    private fun vaiParaComentarios(idPost: String) {
         val intent = Intent(this, ComentariosActivity::class.java)
         intent.putExtra("idPost", idPost)
         startActivity(intent)

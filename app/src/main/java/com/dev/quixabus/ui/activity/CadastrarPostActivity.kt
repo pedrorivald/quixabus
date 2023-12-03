@@ -1,9 +1,9 @@
 package com.dev.quixabus.ui.activity
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dev.quixabus.R
-import com.dev.quixabus.auth.Auth
 import com.dev.quixabus.dao.PostDao
 import com.dev.quixabus.databinding.ActivityCadastrarPostBinding
 import com.dev.quixabus.model.Post
@@ -29,28 +29,35 @@ class CadastrarPostActivity : AppCompatActivity(R.layout.activity_cadastrar_post
         val botaoSalvar = binding.activityCadastrarPostBotaoSalvar
 
         botaoSalvar.setOnClickListener {
-            val post = criarPost()
-            dao.adicionar(post)
-            finish()
+            validarPost()
         }
     }
 
-    private fun criarPost(): Post {
+    private fun validarPost() {
         val campoTexto = binding.activityCadastrarPostTexto
-        val texto = campoTexto.text.toString()
-
-        val auth = Auth()
-        val idUsuario = auth.usuarioLogado.id
+        val texto = campoTexto.text.toString().trim()
 
         val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         val data = sdf.format(Date())
 
-        return Post(
-            id = (0..9999).random(),
-            idUsuario = idUsuario,
+        val post = Post(
             data = data,
             texto = texto
         )
+
+        if(texto.isNotEmpty()) {
+            dao.salvar(post) { sucesso ->
+                if(sucesso) {
+                    finish()
+                    Toast.makeText(this,"Post criado!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Não foi possível salvar o Post, tente novamente mais tarde.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
 }

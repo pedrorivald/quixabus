@@ -2,12 +2,12 @@ package com.dev.quixabus.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dev.quixabus.R
-import com.dev.quixabus.auth.Auth
 import com.dev.quixabus.dao.AmigosDao
 import com.dev.quixabus.databinding.ActivityAmigosBinding
-import com.dev.quixabus.model.AmigoItem
+import com.dev.quixabus.model.Usuario
 import com.dev.quixabus.ui.recyclerview.adapter.AmigosAdapter
 import com.dev.quixabus.util.TopBar
 
@@ -18,28 +18,52 @@ class AmigosActivity : AppCompatActivity(R.layout.activity_amigos), AmigosAdapte
     }
 
     private val dao = AmigosDao()
-    private val auth = Auth()
-    private var adapter: AmigosAdapter = AmigosAdapter(this, amigos = dao.buscaAmigosItems(auth.usuarioLogado.id), this)
+    private lateinit var adapter: AmigosAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        configuraRecyclerView()
         TopBar().configura(supportFragmentManager, R.id.activity_amigos_fragment_top_bar)
+        init()
         setContentView(binding.root)
     }
 
     override fun onResume() {
         super.onResume()
-        adapter.atualizar(dao.buscaAmigosItems(auth.usuarioLogado.id))
+        atualizarAdapter()
         configuraFab()
     }
 
-    override fun clickRemover(amigoItem: AmigoItem) {
-        dao.deletarPorIdUsuarioSolicitado(amigoItem.usuarioSolicitado.id)
-        adapter.atualizar(dao.buscaAmigosItems(auth.usuarioLogado.id))
+    override fun clickRemover(amigo: Usuario) {
+        dao.deletar(amigo.id) { sucesso ->
+            if(sucesso) {
+                Toast.makeText(this, "Amigo removido com sucesso!", Toast.LENGTH_SHORT).show()
+                atualizarAdapter()
+            }
+        }
     }
 
-    private fun configuraRecyclerView() {
+    private fun init() {
+        dao.buscaAmigos { amigos ->
+            if(amigos != null) {
+                configuraRecyclerView(amigos)
+            } else {
+                configuraRecyclerView(emptyList())
+            }
+        }
+    }
+
+    private fun atualizarAdapter() {
+        dao.buscaAmigos { amigos ->
+            if(amigos != null) {
+                adapter.atualizar(amigos)
+            } else {
+                adapter.atualizar(emptyList())
+            }
+        }
+    }
+
+    private fun configuraRecyclerView(amigos: List<Usuario>) {
+        adapter = AmigosAdapter(this, amigos = amigos, this)
         val recyclerView = binding.activityAmigosRv
         recyclerView.adapter = adapter
     }

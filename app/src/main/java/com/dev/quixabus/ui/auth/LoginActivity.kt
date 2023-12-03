@@ -4,11 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.dev.quixabus.R
 import com.dev.quixabus.databinding.ActivityLoginBinding
 import com.dev.quixabus.ui.activity.FeedActivity
+import com.dev.quixabus.util.FirebaseHelper
 import com.dev.quixabus.util.Navigate
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -57,10 +59,10 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
                 loginUser(email, senha)
 
             } else {
-
+                Toast.makeText(this, "Informe uma senha!", Toast.LENGTH_SHORT).show()
             }
         } else {
-
+            Toast.makeText(this, "Informe seu email!", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -72,7 +74,9 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                 } else {
-
+                    Toast.makeText(this, FirebaseHelper.validError(
+                        task.exception?.message ?: ""
+                    ), Toast.LENGTH_SHORT).show()
                 }
 
                 binding.activityLoginProgressBar.isVisible = false

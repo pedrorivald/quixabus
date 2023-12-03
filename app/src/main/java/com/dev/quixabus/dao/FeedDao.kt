@@ -2,7 +2,7 @@ package com.dev.quixabus.dao
 
 import com.dev.quixabus.model.ComentarioItem
 import com.dev.quixabus.model.FeedItem
-import com.dev.quixabus.model.Post
+import com.dev.quixabus.util.FirebaseHelper
 
 class FeedDao {
 
@@ -12,33 +12,65 @@ class FeedDao {
     val comentarioDao = ComentarioDao()
 
     //posts dos amigos e do proprio usuario
-    fun buscaFeed(idUsuario: Int): List<FeedItem> {
-        val amigos = amigosDao.buscaAmigos(idUsuario)
-        val posts: List<Post> = postDao.buscaTodos()
+    fun buscaFeed(callback: (List<FeedItem>?) -> Unit) {
+        val feedList = mutableListOf<FeedItem>()
 
-        val feed = mutableListOf<FeedItem>()
+        //posts dos amigos
+        amigosDao.buscaAmigos { amigos ->
+            if (amigos != null) {
 
-        posts.forEach {
-            val usuario = usuarioDao.buscaPorId(it.idUsuario)
+                val iterator = amigos.iterator()
 
-            if (usuario.id == idUsuario || amigos.contains(usuario)) {
-                feed.add(FeedItem(post = it, usuario = usuario))
+                while (iterator.hasNext()) {
+                    val amigo = iterator.next()
+                    postDao.buscarTodos(amigo.id) { posts ->
+                        if(posts != null) {
+                            posts.forEach { post ->
+                                feedList.add(FeedItem(post = post, usuario = amigo))
+                                callback(feedList)
+                            }
+                        } else {
+                            callback(null)
+                        }
+                    }
+                }
+            } else {
+                callback(null)
             }
         }
 
-        return feed.toList()
+        //posts do usuario
+        usuarioDao.getUsuarioPorId(FirebaseHelper.getIdUser()?: "") { usuario ->
+            if(usuario != null) {
+                postDao.buscarTodos(usuario.id) { postsUser ->
+                    postsUser?.forEach { postUser ->
+                        feedList.add(FeedItem(post = postUser, usuario = usuario))
+                        callback(feedList)
+                    }
+                }
+            }
+        }
     }
 
-    fun buscaComentariosPorPost(idPost: Int): List<ComentarioItem> {
-        val comentarios = comentarioDao.buscaPorIdPost(idPost)
-        val comentariosItems = mutableListOf<ComentarioItem>()
 
-        comentarios.forEach {
-            val usuario = usuarioDao.buscaPorId(it.idUsuario)
-            comentariosItems.add(ComentarioItem(comentario = it, usuario = usuario))
+    fun buscaComentariosPorPost(feedItem: FeedItem, callback: (List<ComentarioItem>?) -> Unit) {
+        val comentarioList = mutableListOf<ComentarioItem>()
+
+        comentarioDao.buscarComentariosPorIdPost(feedItem.post.id, feedItem.usuario.id) { comentarios ->
+            if(comentarios != null) {
+                comentarios.forEach { comentario ->
+                    usuarioDao.getUsuarioPorId(comentario.usuarioId) { usuario ->
+                        if (usuario != null) {
+                            comentarioList.add(ComentarioItem(comentario = comentario, usuario = usuario))
+                        }
+                    }
+                }
+
+                callback(comentarioList)
+            } else {
+                callback(null)
+            }
         }
-
-        return comentariosItems.toList()
     }
 
 }

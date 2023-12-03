@@ -4,10 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.dev.quixabus.R
-import com.dev.quixabus.auth.Auth
 import com.dev.quixabus.dao.ComentarioDao
 import com.dev.quixabus.dao.FeedDao
 import com.dev.quixabus.databinding.ActivityComentariosBinding
+import com.dev.quixabus.model.FeedItem
 import com.dev.quixabus.ui.recyclerview.adapter.ComentariosAdapter
 import com.dev.quixabus.util.TopBar
 
@@ -17,21 +17,20 @@ class ComentariosActivity : AppCompatActivity(R.layout.activity_comentarios) {
         ActivityComentariosBinding.inflate(layoutInflater)
     }
 
-    private var idPost: Int? = null
+    private var feedItem: FeedItem? = null
 
-    private val auth = Auth()
     private val dao = ComentarioDao()
     private val feedDao = FeedDao()
-    private var adapter: ComentariosAdapter? = null
+    private lateinit var adapter: ComentariosAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val dados = intent.extras
-        idPost = dados?.getInt("idPost")
+        feedItem = dados?.get("idPost") as FeedItem
 
-        if (idPost != null) {
-            adapter = ComentariosAdapter(this, comentarios = feedDao.buscaComentariosPorPost(idPost!!))
+        if (feedItem != null) {
+            buscarComentarios()
         }
 
         configuraRecyclerView()
@@ -41,8 +40,24 @@ class ComentariosActivity : AppCompatActivity(R.layout.activity_comentarios) {
 
     override fun onResume() {
         super.onResume()
-        adapter?.atualizar(feedDao.buscaComentariosPorPost(idPost!!))
+        atualizarFeed()
         configuraFab()
+    }
+
+    fun buscarComentarios() {
+        feedDao.buscaComentariosPorPost(feedItem!!) { comentarios ->
+            if(comentarios != null) {
+                adapter = ComentariosAdapter(this, comentarios = comentarios)
+            }
+        }
+    }
+
+    fun atualizarFeed() {
+        feedDao.buscaComentariosPorPost(feedItem!!) { comentarios ->
+            if(comentarios != null) {
+                adapter.atualizar(comentarios)
+            }
+        }
     }
 
     private fun configuraRecyclerView() {
@@ -59,7 +74,7 @@ class ComentariosActivity : AppCompatActivity(R.layout.activity_comentarios) {
 
     private fun vaiParaCadastrarComentario() {
         val intent = Intent(this, CadastrarComentarioActivity::class.java)
-        intent.putExtra("idPost", idPost)
+        intent.putExtra("idPost", feedItem!!.post.id)
         startActivity(intent)
     }
 }

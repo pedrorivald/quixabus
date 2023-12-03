@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.quixabus.databinding.ActivityAmigoBinding
-import com.dev.quixabus.model.AmigoItem
+import com.dev.quixabus.model.Usuario
 
 class AmigosAdapter(
     private val context: Context,
-    amigos: List<AmigoItem>,
+    amigos: List<Usuario>,
     var clickRemover: AmigosAdapter.ClickRemover
 ): RecyclerView.Adapter<AmigosAdapter.ViewHolder>() {
 
@@ -31,19 +31,19 @@ class AmigosAdapter(
     override fun getItemCount(): Int = amigos.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val amigoItem = amigos[position]
-        holder.vincula(amigoItem)
+        val amigo = amigos[position]
+        holder.vincula(amigo)
 
         holder.btnRemover.setOnClickListener{
-            clickRemover.clickRemover(amigoItem)
+            clickRemover.clickRemover(amigo)
         }
     }
 
     interface ClickRemover {
-        fun clickRemover(amigoItem: AmigoItem)
+        fun clickRemover(amigo: Usuario)
     }
 
-    fun atualizar(amigos: List<AmigoItem>) {
+    fun atualizar(amigos: List<Usuario>) {
         this.amigos.clear()
         this.amigos.addAll(amigos)
         notifyDataSetChanged()
@@ -54,7 +54,7 @@ class AmigosAdapter(
         notifyDataSetChanged()
     }
 
-    fun buscaItem(index: Int): AmigoItem {
+    fun buscaItem(index: Int): Usuario {
         return amigos[index];
     }
 
@@ -65,8 +65,8 @@ class AmigosAdapter(
 
         private val usuario = binding.amigoUsuario
 
-        fun vincula(amigo: AmigoItem) {
-            usuario.text = amigo.usuarioSolicitado.nome
+        fun vincula(amigo: Usuario) {
+            usuario.text = amigo.nome
         }
 
     }

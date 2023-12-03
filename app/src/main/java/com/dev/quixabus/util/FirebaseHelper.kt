@@ -1,5 +1,6 @@
 package com.dev.quixabus.util
 
+import com.dev.quixabus.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
@@ -17,22 +18,22 @@ class FirebaseHelper {
         fun validError(error: String): Int {
             return when {
                 error.contains("There is no user record corresponding to this identifier") -> {
-                    1
+                    R.string.nenhuma_conta_encontrada
                 }
                 error.contains("The email address is badly formatted") -> {
-                    2
+                    R.string.insira_email_valido
                 }
-                error.contains("The password is invalid or the user does not have a password") -> {
-                    3
+                error.contains("The supplied auth credential is incorrect") -> {
+                    R.string.senha_invalida
                 }
                 error.contains("The email address is already in use by another account") -> {
-                    4
+                    R.string.email_existente
                 }
                 error.contains("Password should be at least 6 characters") -> {
-                    5
+                    R.string.insira_uma_senha_forte
                 }
                 else -> {
-                    6
+                    R.string.erro_global
                 }
             }
         }
