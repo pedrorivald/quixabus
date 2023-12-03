@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".ui.auth.RecuperarSenhaActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ScrollViewBackground"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_bold"
+            android:textAlignment="center"
+            android:text="Recuperar senha"
+            style="@style/H1TextViewColor"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Digite seu email para receber um link para alterar sua senha"
+            style="@style/H1TextViewColor"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/activity_recuperar_textinputlayout_email"
+            style="@style/TextFieldColor"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/activity_recuperar_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/activity_recuperar_botao_enviar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="Enviar"
+            style="@style/ButtonColor" />
+
+        <ProgressBar
+            android:id="@+id/activity_recuperar_progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/ProgressBarColor"
+            android:visibility="invisible"
+            tools:visibility="visible"/>
+
+    </LinearLayout>
+
+</ScrollView>

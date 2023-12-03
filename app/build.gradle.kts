@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -42,8 +43,9 @@ android {
 
 dependencies {
 
-    implementation("com.google.android.gms:play-services-location:21.0.1")
     val fragment_version = "1.6.1"
+
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -57,4 +59,16 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation("com.google.android.gms:play-services-maps:18.1.0")
     implementation("androidx.fragment:fragment-ktx:$fragment_version")
+
+    //Firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-database")
+    implementation("com.google.firebase:firebase-auth")
+
+    //Navigation
+    val nav_version = "2.5.0"
+    implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
+    implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
+
 }

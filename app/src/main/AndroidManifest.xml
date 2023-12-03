@@ -17,6 +17,12 @@
         android:theme="@style/Theme.Quixabus"
         tools:targetApi="31">
         <activity
+            android:name=".ui.auth.CriarContaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.auth.RecuperarSenhaActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.CadastrarAmigoActivity"
             android:exported="false" />
         <activity
@@ -78,6 +84,9 @@
             android:exported="false" />
         <activity
             android:name=".ui.activity.FeedActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.auth.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

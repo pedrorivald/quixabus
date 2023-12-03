@@ -1,5 +1,6 @@
 package com.dev.quixabus.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -9,8 +10,12 @@ import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import com.dev.quixabus.R
 import com.dev.quixabus.databinding.FragmentTopBarBinding
+import com.dev.quixabus.ui.auth.LoginActivity
 import com.dev.quixabus.util.Navigate
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 class TopBarFragment : Fragment(R.layout.fragment_top_bar) {
@@ -57,11 +62,20 @@ class TopBarFragment : Fragment(R.layout.fragment_top_bar) {
                     navigate.toLinksUteis(view.context)
                     true
                 }
+                R.id.menus_action_logout -> {
+                    val auth: FirebaseAuth = Firebase.auth
+                    auth.signOut()
+                    val intent = Intent(requireContext(), LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    true
+                }
                 else -> false
             }
         }
 
         popupMenu.show()
     }
+
 
 }

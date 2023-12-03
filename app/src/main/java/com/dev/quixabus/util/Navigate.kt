@@ -7,6 +7,9 @@ import com.dev.quixabus.ui.activity.AmigosActivity
 import com.dev.quixabus.ui.activity.FeedActivity
 import com.dev.quixabus.ui.activity.ItinerarioActivity
 import com.dev.quixabus.ui.activity.LinksActivity
+import com.dev.quixabus.ui.auth.CriarContaActivity
+import com.dev.quixabus.ui.auth.LoginActivity
+import com.dev.quixabus.ui.auth.RecuperarSenhaActivity
 
 class Navigate {
 
@@ -32,6 +35,21 @@ class Navigate {
 
     fun toAmigos(context: Context) {
         val intent = Intent(context, AmigosActivity::class.java)
+        context.startActivity(intent)
+    }
+
+    fun toLogin(context: Context) {
+        val intent = Intent(context, LoginActivity::class.java)
+        context.startActivity(intent)
+    }
+
+    fun toCriarConta(context: Context) {
+        val intent = Intent(context, CriarContaActivity::class.java)
+        context.startActivity(intent)
+    }
+
+    fun toRecuperarSenha(context: Context) {
+        val intent = Intent(context, RecuperarSenhaActivity::class.java)
         context.startActivity(intent)
     }
 }

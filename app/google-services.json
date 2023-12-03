@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "684988003586",
+    "project_id": "quixabus-fire",
+    "storage_bucket": "quixabus-fire.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:684988003586:android:5e1483386de4469348fe1b",
+        "android_client_info": {
+          "package_name": "com.dev.quixabus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCozTE1PcIb3dvvWBy04jXR2Zc6Xytfh6Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

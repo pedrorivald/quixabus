@@ -15,7 +15,6 @@
             style="@style/ToolbarColor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:menu="@menu/top_app_bar"
             app:navigationIcon="@drawable/action_menu"
             app:navigationContentDescription="Menu"
             app:title="QuixaBus"
