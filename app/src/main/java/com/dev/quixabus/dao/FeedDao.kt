@@ -53,20 +53,19 @@ class FeedDao {
     }
 
 
-    fun buscaComentariosPorPost(feedItem: FeedItem, callback: (List<ComentarioItem>?) -> Unit) {
+    fun buscaComentariosPorPost(postId: String, usuarioId: String, callback: (List<ComentarioItem>?) -> Unit) {
         val comentarioList = mutableListOf<ComentarioItem>()
 
-        comentarioDao.buscarComentariosPorIdPost(feedItem.post.id, feedItem.usuario.id) { comentarios ->
+        comentarioDao.buscarComentariosPorIdPost(postId, usuarioId) { comentarios ->
             if(comentarios != null) {
                 comentarios.forEach { comentario ->
                     usuarioDao.getUsuarioPorId(comentario.usuarioId) { usuario ->
                         if (usuario != null) {
                             comentarioList.add(ComentarioItem(comentario = comentario, usuario = usuario))
+                            callback(comentarioList)
                         }
                     }
                 }
-
-                callback(comentarioList)
             } else {
                 callback(null)
             }

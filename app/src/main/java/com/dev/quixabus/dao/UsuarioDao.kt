@@ -1,7 +1,6 @@
 package com.dev.quixabus.dao
 
 import com.dev.quixabus.model.Usuario
-import com.dev.quixabus.model.UsuarioOld
 import com.dev.quixabus.util.FirebaseHelper
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -52,40 +51,6 @@ class UsuarioDao {
                 callback(null)
             }
         })
-    }
-
-    fun buscaPorEmail(email: String): UsuarioOld {
-        return usuarios.filter { it.email == email }[0]
-    }
-
-    companion object {
-        private val usuarios = mutableListOf<UsuarioOld>(
-            UsuarioOld(
-                id = 1,
-                nome = "Pedro",
-                email = "pedro@gmail.com"
-            ),
-            UsuarioOld(
-                id = 2,
-                nome = "Tiago",
-                email = "tiago@gmail.com"
-            ),
-            UsuarioOld(
-                id = 3,
-                nome = "João",
-                email = "joao@gmail.com"
-            ),
-            UsuarioOld(
-                id = 4,
-                nome = "Marcos",
-                email = "marcos@gmail.com"
-            ),
-            UsuarioOld(
-                id = 5,
-                nome = "Lucas",
-                email = "lucas@gmail.com"
-            ),
-        )
     }
 
 }

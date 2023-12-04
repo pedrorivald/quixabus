@@ -1,109 +1,132 @@
 package com.dev.quixabus.dao
 
 import com.dev.quixabus.model.Aula
-import com.dev.quixabus.model.DiaSemana
+import com.dev.quixabus.util.FirebaseHelper
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 class AulasDao {
 
-    fun adicionar(aula: Aula) {
-        aulas.add(aula)
+    fun salvar(aula: Aula, callback: (Boolean) -> Unit) {
+        FirebaseHelper.getDatabase()
+            .child("aulas")
+            .child(FirebaseHelper.getIdUser()?: "")
+            .child(aula.id)
+            .setValue(aula)
+            .addOnCompleteListener {
+                if(it.isSuccessful) {
+                    callback(true)
+                } else {
+                    callback(false)
+                }
+            }.addOnFailureListener {
+                callback(false)
+            }
     }
 
-    fun atualizar(aula: Aula) {
-        val index = getIndex(aula.id)
-        aulas.set(index, aula)
+    fun buscarPorDia(usuarioId: String, diaDaSemana: String, callback: (List<Aula>?) -> Unit) {
+        val aulaList = mutableListOf<Aula>()
+
+        FirebaseHelper.getDatabase()
+            .child("aulas")
+            .child(usuarioId)
+            .orderByChild("diaSemana")
+            .equalTo(diaDaSemana)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        for (snap in snapshot.children) {
+                            val aula = snap.getValue(Aula::class.java) as Aula
+                            aulaList.add(aula)
+                        }
+
+                        callback(aulaList)
+                    } else {
+                        callback(null)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    callback(null)
+                }
+
+            })
     }
 
-    fun deletar(id: Int) {
-        val index = getIndex(id)
-        aulas.removeAt(index)
-    }
+    fun atualizar(aulaId: String,
+                  usuarioId: String,
+                  diaSemana: String,
+                  nome: String,
+                  professor: String,
+                  bloco: String,
+                  sala: String,
+                  turma: String,
+                  horarioInicio: String,
+                  horarioFim: String,
+                  callback: (Boolean) -> Unit) {
 
-    fun buscaTodos() : List<Aula> {
-        return aulas.toList()
-    }
+        val aulaRef = FirebaseHelper.getDatabase()
+            .child("aulas")
+            .child(usuarioId)
+            .child(aulaId)
 
-    fun buscaPorDia(dia: DiaSemana): List<Aula> {
-        return aulas.filter { it.diaSemana == dia }
-    }
-
-    fun buscaPorId(id: Int): Aula {
-        return aulas.filter { it.id == id }[0]
-    }
-
-    private fun getIndex(id: Int): Int {
-        return aulas.indexOfFirst { it.id == id }
-    }
-
-    companion object {
-        private val aulas = mutableListOf<Aula>(
-            Aula(
-                id = 1,
-                nome = "Programação WEB",
-                diaSemana = DiaSemana.SEGUNDA,
-                bloco = "3",
-                sala = "4",
-                professor = "João",
-                turma = "2",
-                horarioInicio = "08:00",
-                horarioFim = "10:00"
-            ),
-            Aula(
-                id = 2,
-                nome = "Programação WEB 2",
-                diaSemana = DiaSemana.SEGUNDA,
-                bloco = "3",
-                sala = "4",
-                professor = "João",
-                turma = "2",
-                horarioInicio = "08:00",
-                horarioFim = "10:00"
-            ),
-            Aula(
-                id = 3,
-                nome = "Linguagens de Marcação e Scripts",
-                diaSemana = DiaSemana.TERCA,
-                bloco = "3",
-                sala = "4",
-                professor = "João",
-                turma = "2",
-                horarioInicio = "08:00",
-                horarioFim = "10:00"
-            ),
-            Aula(
-                id = 4,
-                nome = "Programação WEB",
-                diaSemana = DiaSemana.TERCA,
-                bloco = "3",
-                sala = "4",
-                professor = "João",
-                turma = "2",
-                horarioInicio = "08:00",
-                horarioFim = "10:00"
-            ),
-            Aula(
-                id = 5,
-                nome = "Programação WEB 2",
-                diaSemana = DiaSemana.SABADO,
-                bloco = "3",
-                sala = "4",
-                professor = "João",
-                turma = "2",
-                horarioInicio = "08:00",
-                horarioFim = "10:00"
-            ),
-            Aula(
-                id = 6,
-                nome = "Linguagens de Marcação e Scripts",
-                diaSemana = DiaSemana.SEXTA,
-                bloco = "3",
-                sala = "4",
-                professor = "João",
-                turma = "2",
-                horarioInicio = "08:00",
-                horarioFim = "10:00"
-            )
+        val novo = hashMapOf<String, Any>(
+            "aulaId" to aulaId,
+            "diaSemana" to diaSemana,
+            "nome" to nome,
+            "professor" to professor,
+            "bloco" to bloco,
+            "sala" to sala,
+            "turma" to turma,
+            "horarioInicio" to horarioInicio,
+            "horarioFim" to horarioFim
         )
+
+        aulaRef.updateChildren(novo)
+            .addOnSuccessListener {
+                callback(true)
+            }
+            .addOnFailureListener {
+                callback(false)
+            }
     }
+
+    fun deletar(aulaId: String, callback: (Boolean) -> Unit) {
+        val aulaRef = FirebaseHelper.getDatabase()
+            .child("aulas")
+            .child(FirebaseHelper.getIdUser() ?: "")
+            .child(aulaId)
+
+        aulaRef.removeValue()
+            .addOnSuccessListener {
+                callback(true)
+            }
+            .addOnFailureListener {
+                callback(false)
+            }
+    }
+
+    fun buscarPorId(aulaId: String, usuarioId: String, callback: (Aula?) -> Unit) {
+        FirebaseHelper.getDatabase()
+            .child("aulas")
+            .child(usuarioId)
+            .child(aulaId)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        val aula = snapshot.getValue(Aula::class.java) as Aula
+                        callback(aula)
+                    } else {
+                        callback(null)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    callback(null)
+                }
+            })
+    }
+
 
 }

@@ -1,39 +1,34 @@
 package com.dev.quixabus.ui.activity
 
+import android.content.Context
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dev.quixabus.R
 import com.dev.quixabus.dao.AulasDao
 import com.dev.quixabus.databinding.ActivityEditarAulaBinding
 import com.dev.quixabus.model.Aula
-import com.dev.quixabus.model.DiaSemana
+import com.dev.quixabus.util.FirebaseHelper
 import com.dev.quixabus.util.TopBar
 
 class EditarAulaActivity : AppCompatActivity(R.layout.activity_editar_aula) {
 
-    private var id: Int? = null
-    private var diaSelecionado: String? = null
+    private lateinit var aulaId: String
+    private var diaSelecionado: String = "Segunda"
     private val dao = AulasDao()
-    private var aula: Aula? = null
+    private lateinit var aula: Aula
     private val binding by lazy {
         ActivityEditarAulaBinding.inflate(layoutInflater)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val dados = intent.extras
-        id = dados?.getInt("id")
-
-        if (id != null) {
-            aula = dao.buscaPorId(id!!)
-        }
-
-        if (aula != null) {
-            configuraAula(aula!!)
-        }
+        aulaId = intent.getStringExtra("aulaId")!!
+        buscaAula()
 
         configuraBotaoSalvar()
         configuraDropdownDiasDaSemana()
@@ -42,13 +37,33 @@ class EditarAulaActivity : AppCompatActivity(R.layout.activity_editar_aula) {
         setContentView(binding.root)
     }
 
+    private fun buscaAula() {
+        dao.buscarPorId(aulaId, FirebaseHelper.getIdUser()?:"") { aula ->
+            if(aula != null) {
+                this.aula = Aula(
+                    id = aula.id,
+                    diaSemana = aula.diaSemana,
+                    nome = aula.nome,
+                    professor = aula.professor,
+                    bloco = aula.bloco,
+                    sala = aula.sala,
+                    turma = aula.turma,
+                    horarioInicio = aula.horarioInicio,
+                    horarioFim = aula.horarioFim
+                )
+
+                configuraAula(this.aula)
+            } else {
+                Toast.makeText(this, "Não foi possível obter a aula.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun configuraBotaoSalvar() {
         val botaoSalvar = binding.activityEditarAulaBotaoSalvar
 
         botaoSalvar.setOnClickListener {
-            val aula = criarAula()
-            dao.atualizar(aula)
-            finish()
+            validarAula()
         }
     }
 
@@ -57,7 +72,7 @@ class EditarAulaActivity : AppCompatActivity(R.layout.activity_editar_aula) {
         binding.activityEditarAulaProfessor.setText(aula.professor)
         binding.activityEditarAulaTurma.setText(aula.turma)
 
-        diaSelecionado = diaSemanaText(aula.diaSemana)
+        diaSelecionado = aula.diaSemana
         (binding.activityEditarAulaSemana.editText as AutoCompleteTextView).setText(diaSelecionado, false)
 
         binding.activityEditarAulaBloco.setText(aula.bloco)
@@ -66,41 +81,67 @@ class EditarAulaActivity : AppCompatActivity(R.layout.activity_editar_aula) {
         binding.activityEditarAulaHorariofim.setText(aula.horarioFim)
     }
 
-    private fun criarAula(): Aula {
+    private fun validarAula() {
         val campoNome = binding.activityEditarAulaNome
-        val nome = campoNome.text.toString()
+        val nome = campoNome.text.toString().trim()
 
         val campoProfessor = binding.activityEditarAulaProfessor
-        val professor = campoProfessor.text.toString()
+        val professor = campoProfessor.text.toString().trim()
 
         val campoTurma = binding.activityEditarAulaTurma
-        val turma = campoTurma.text.toString()
+        val turma = campoTurma.text.toString().trim()
 
-        val diaDaSemana = diaSemanaSelecionado(diaSelecionado)
+        val diaDaSemana = diaSelecionado.trim()
 
         val campoBloco = binding.activityEditarAulaBloco
-        val bloco = campoBloco.text.toString()
+        val bloco = campoBloco.text.toString().trim()
 
         val campoSala = binding.activityEditarAulaSala
-        val sala = campoSala.text.toString()
+        val sala = campoSala.text.toString().trim()
 
         val campoHorarioInicio = binding.activityEditarAulaHorarioinicio
-        val horarioInicio = campoHorarioInicio.text.toString()
+        val horarioInicio = campoHorarioInicio.text.toString().trim()
 
         val campoHorarioFim = binding.activityEditarAulaHorariofim
-        val horarioFim = campoHorarioFim.text.toString()
+        val horarioFim = campoHorarioFim.text.toString().trim()
 
-        return Aula(
-            id = aula!!.id,
-            nome = nome,
-            professor = professor,
-            turma = turma,
-            diaSemana = diaDaSemana,
-            bloco = bloco,
-            sala = sala,
-            horarioInicio = horarioInicio,
-            horarioFim = horarioFim
-        )
+        if(nome.isNotEmpty()
+            && professor.isNotEmpty()
+            && turma.isNotEmpty()
+            && diaDaSemana.isNotEmpty()
+            && bloco.isNotEmpty()
+            && sala.isNotEmpty()
+            && horarioInicio.isNotEmpty()
+            && horarioFim.isNotEmpty()) {
+
+            dao.atualizar(aulaId,
+                FirebaseHelper.getIdUser()?:"",
+                diaDaSemana,
+                nome,
+                professor,
+                bloco,
+                sala,
+                turma,
+                horarioInicio,
+                horarioFim) { sucesso ->
+                    hideKeyboard()
+
+                    if(sucesso) {
+                        finish()
+                        Toast.makeText(this, "Aula editada com sucesso!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, "Não foi possível editar a aula, tente novamente.", Toast.LENGTH_SHORT).show()
+                    }
+            }
+
+        } else {
+            Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun hideKeyboard() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken , 0)
     }
 
     private fun configuraDropdownDiasDaSemana() {
@@ -114,35 +155,5 @@ class EditarAulaActivity : AppCompatActivity(R.layout.activity_editar_aula) {
             AdapterView.OnItemClickListener { adapterView, view, position, id ->
                 diaSelecionado = adapterDiasDaSemana.getItem(position).toString()
             }
-    }
-
-    private fun diaSemanaSelecionado(diaText: String?): DiaSemana {
-        return when (diaText) {
-            "Domingo" -> DiaSemana.DOMINGO
-            "Segunda" -> DiaSemana.SEGUNDA
-            "Terça" -> DiaSemana.TERCA
-            "Quarta" -> DiaSemana.QUARTA
-            "Quinta" -> DiaSemana.QUINTA
-            "Sexta" -> DiaSemana.SEXTA
-            "Sábado" -> DiaSemana.SABADO
-            else -> {
-                DiaSemana.SEGUNDA
-            }
-        }
-    }
-
-    private fun diaSemanaText(dia: DiaSemana): String {
-        return when (dia) {
-            DiaSemana.DOMINGO -> "Domingo"
-            DiaSemana.SEGUNDA -> "Segunda"
-            DiaSemana.TERCA -> "Terça"
-            DiaSemana.QUARTA -> "Quarta"
-            DiaSemana.QUINTA -> "Quinta"
-            DiaSemana.SEXTA -> "Sexta"
-            DiaSemana.SABADO -> "Sábado"
-            else -> {
-                "Segunda"
-            }
-        }
     }
 }

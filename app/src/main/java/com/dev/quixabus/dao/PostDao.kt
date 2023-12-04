@@ -1,19 +1,12 @@
 package com.dev.quixabus.dao
 
 import com.dev.quixabus.model.Post
-import com.dev.quixabus.model.PostOld
 import com.dev.quixabus.util.FirebaseHelper
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
 class PostDao {
-
-    val comentarioDao = ComentarioDao()
-
-    fun adicionar(post: PostOld) {
-        posts.add(post)
-    }
 
     fun salvar(post: Post, callback: (Boolean) -> Unit) {
         FirebaseHelper.getDatabase()
@@ -64,10 +57,10 @@ class PostDao {
             .child("posts")
             .child(usuarioId)
             .child(id)
-            .addValueEventListener(object : ValueEventListener {
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
-                        val post = snapshot.children.first().getValue(Post::class.java) as Post
+                        val post = snapshot.getValue(Post::class.java) as Post
                         callback(post)
                     } else {
                         callback(null)
@@ -81,72 +74,38 @@ class PostDao {
             })
     }
 
-    fun atualizar(post: PostOld) {
-        val index = getIndex(post.id)
-        posts.set(index, post)
-    }
+    fun atualizar(postId: String, texto: String, usuarioId: String, callback: (Boolean) -> Unit) {
 
-    fun deletar(id: Int) {
-        //deletar comentarios do post
-        val comentarios = comentarioDao.buscaPorIdPost(id)
-        comentarios.forEach {
-            comentarioDao.deletar(it.id)
-        }
+        val postRef = FirebaseHelper.getDatabase()
+            .child("posts")
+            .child(usuarioId)
+            .child(postId)
 
-        val index = getIndex(id)
-        posts.removeAt(index)
-    }
-
-    fun buscaTodos() : List<PostOld> {
-        return posts.toList()
-    }
-
-    fun buscaPorIdUsuario(idUsuario: Int): List<PostOld> {
-        return posts.filter { it.idUsuario == idUsuario }
-    }
-
-    private fun getIndex(id: Int): Int {
-        return posts.indexOfFirst { it.id == id }
-    }
-
-    companion object {
-        private val posts = mutableListOf<PostOld>(
-            PostOld(
-                id = 1,
-                texto = "Post 1",
-                idUsuario = 1,
-                data = "10/11/2023"
-            ),
-            PostOld(
-                id = 2,
-                texto = "Post 2",
-                idUsuario = 3,
-                data = "10/11/2023"
-            ),
-            PostOld(
-                id = 3,
-                texto = "Post 3",
-                idUsuario = 1,
-                data = "10/11/2023"
-            ),
-            PostOld(
-                id = 4,
-                texto = "Post 4",
-                idUsuario = 2,
-                data = "10/11/2023"
-            ),
-            PostOld(
-                id = 5,
-                texto = "Post 5",
-                idUsuario = 1,
-                data = "10/11/2023"
-            ),
-            PostOld(
-                id = 6,
-                texto = "Post 6",
-                idUsuario = 4,
-                data = "10/11/2023"
-            )
+        val novo = hashMapOf<String, Any>(
+            "texto" to texto
         )
+
+        postRef.updateChildren(novo)
+            .addOnSuccessListener {
+                callback(true)
+            }
+            .addOnFailureListener {
+                callback(false)
+            }
+    }
+
+    fun deletar(id: String, callback: (Boolean) -> Unit) {
+        val postRef = FirebaseHelper.getDatabase()
+            .child("posts")
+            .child(FirebaseHelper.getIdUser() ?: "")
+            .child(id)
+
+        postRef.removeValue()
+            .addOnSuccessListener {
+                callback(true)
+            }
+            .addOnFailureListener {
+                callback(false)
+            }
     }
 }

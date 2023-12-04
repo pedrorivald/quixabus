@@ -1,17 +1,22 @@
 package com.dev.quixabus.model
 
-enum class DiaSemana {
-    DOMINGO, SEGUNDA, TERCA, QUARTA, QUINTA, SEXTA, SABADO
-}
+import android.os.Parcelable
+import com.dev.quixabus.util.FirebaseHelper
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Aula (
-    val id: Int,
-    val diaSemana: DiaSemana,
-    val nome: String,
-    val professor: String,
-    val bloco: String,
-    val sala: String,
-    val turma: String,
-    val horarioInicio: String,
-    val horarioFim: String
-)
+    var id: String = "",
+    var diaSemana: String = "",
+    var nome: String = "",
+    var professor: String = "",
+    var bloco: String = "",
+    var sala: String = "",
+    var turma: String = "",
+    var horarioInicio: String = "",
+    var horarioFim: String = "",
+): Parcelable {
+    init {
+        this.id = FirebaseHelper.getDatabase().push().key ?: ""
+    }
+}

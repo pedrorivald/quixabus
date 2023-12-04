@@ -1,11 +1,13 @@
 package com.dev.quixabus.ui.activity
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dev.quixabus.R
 import com.dev.quixabus.dao.ComentarioDao
 import com.dev.quixabus.databinding.ActivityCadastrarComentarioBinding
-import com.dev.quixabus.model.ComentarioOld
+import com.dev.quixabus.model.Comentario
+import com.dev.quixabus.util.FirebaseHelper
 import com.dev.quixabus.util.TopBar
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -14,8 +16,8 @@ import java.util.Locale
 class CadastrarComentarioActivity : AppCompatActivity(R.layout.activity_cadastrar_comentario) {
 
     private val dao = ComentarioDao()
-
-    private var idPost: Int? = null
+    private lateinit var postId: String
+    private lateinit var usuarioId: String
 
     private val binding by lazy {
         ActivityCadastrarComentarioBinding.inflate(layoutInflater)
@@ -23,8 +25,8 @@ class CadastrarComentarioActivity : AppCompatActivity(R.layout.activity_cadastra
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val dados = intent.extras
-        idPost = dados?.getInt("idPost")
+        postId = intent.getStringExtra("postId")!!
+        usuarioId = intent.getStringExtra("usuarioId")!!
 
         configuraBotaoSalvar()
         TopBar().configura(supportFragmentManager, R.id.activity_cadastrar_comentario_fragment_top_bar)
@@ -35,27 +37,36 @@ class CadastrarComentarioActivity : AppCompatActivity(R.layout.activity_cadastra
         val botaoSalvar = binding.activityCadastrarComentarioBotaoSalvar
 
         botaoSalvar.setOnClickListener {
-            val comentario = criarComentario()
-            dao.adicionar(comentario)
-            finish()
+            validarComentario()
         }
     }
 
-    private fun criarComentario(): ComentarioOld {
+    private fun validarComentario() {
         val campoTexto = binding.activityCadastrarComentarioTexto
-        val texto = campoTexto.text.toString()
-
-        val idUsuario = 1
+        val texto = campoTexto.text.toString().trim()
 
         val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         val data = sdf.format(Date())
 
-        return ComentarioOld(
-            id = (0..9999).random(),
-            idUsuario = idUsuario,
-            idPost = idPost!!,
-            data = data,
-            texto = texto
-        )
+        if(texto.isNotEmpty()) {
+            val comentario = Comentario(
+                usuarioId = FirebaseHelper.getIdUser()?:"",
+                data = data,
+                texto = texto
+            )
+
+            dao.salvar(postId, usuarioId, comentario) { sucesso ->
+                if(sucesso) {
+                    finish()
+                    Toast.makeText(this,"Comentário criado!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Não foi possível comentar, tente novamente mais tarde.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            Toast.makeText(this, "Insira seu comentário.", Toast.LENGTH_SHORT).show()
+        }
+
+
     }
 }

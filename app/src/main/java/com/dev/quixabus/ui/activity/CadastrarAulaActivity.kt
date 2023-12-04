@@ -4,17 +4,17 @@ import android.os.Bundle
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dev.quixabus.R
 import com.dev.quixabus.dao.AulasDao
 import com.dev.quixabus.databinding.ActivityCadastrarAulaBinding
 import com.dev.quixabus.model.Aula
-import com.dev.quixabus.model.DiaSemana
 import com.dev.quixabus.util.TopBar
 
 class CadastrarAulaActivity : AppCompatActivity(R.layout.activity_cadastrar_aula) {
 
-    private var diaSelecionado: String? = null
+    private var diaSelecionado: String = "Segunda"
     private val dao = AulasDao()
     private val binding by lazy {
         ActivityCadastrarAulaBinding.inflate(layoutInflater)
@@ -31,38 +31,35 @@ class CadastrarAulaActivity : AppCompatActivity(R.layout.activity_cadastrar_aula
         val botaoSalvar = binding.activityCadastrarAulaBotaoSalvar
 
         botaoSalvar.setOnClickListener {
-            val aula = criarAula()
-            dao.adicionar(aula)
-            finish()
+            validarAula()
         }
     }
 
-    private fun criarAula(): Aula {
+    private fun validarAula() {
         val campoNome = binding.activityCadastrarAulaNome
-        val nome = campoNome.text.toString()
+        val nome = campoNome.text.toString().trim()
 
         val campoProfessor = binding.activityCadastrarAulaProfessor
-        val professor = campoProfessor.text.toString()
+        val professor = campoProfessor.text.toString().trim()
 
         val campoTurma = binding.activityCadastrarAulaTurma
-        val turma = campoTurma.text.toString()
+        val turma = campoTurma.text.toString().trim()
 
-        val diaDaSemana = diaSemanaSelecionado(diaSelecionado)
+        val diaDaSemana = diaSelecionado.trim()
 
         val campoBloco = binding.activityCadastrarAulaBloco
-        val bloco = campoBloco.text.toString()
+        val bloco = campoBloco.text.toString().trim()
 
         val campoSala = binding.activityCadastrarAulaSala
-        val sala = campoSala.text.toString()
+        val sala = campoSala.text.toString().trim()
 
         val campoHorarioInicio = binding.activityCadastrarAulaHorarioinicio
-        val horarioInicio = campoHorarioInicio.text.toString()
+        val horarioInicio = campoHorarioInicio.text.toString().trim()
 
         val campoHorarioFim = binding.activityCadastrarAulaHorariofim
-        val horarioFim = campoHorarioFim.text.toString()
+        val horarioFim = campoHorarioFim.text.toString().trim()
 
-        return Aula(
-            id = (0..9999).random(),
+        val aula = Aula(
             nome = nome,
             professor = professor,
             turma = turma,
@@ -72,6 +69,27 @@ class CadastrarAulaActivity : AppCompatActivity(R.layout.activity_cadastrar_aula
             horarioInicio = horarioInicio,
             horarioFim = horarioFim
         )
+
+        if(nome.isNotEmpty()
+            && professor.isNotEmpty()
+            && turma.isNotEmpty()
+            && diaDaSemana.isNotEmpty()
+            && bloco.isNotEmpty()
+            && sala.isNotEmpty()
+            && horarioInicio.isNotEmpty()
+            && horarioFim.isNotEmpty()) {
+
+            dao.salvar(aula) { sucesso ->
+                if(sucesso) {
+                    finish()
+                    Toast.makeText(this,"Aula cadastrada!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Não foi possível cadastrar a Aula, tente novamente mais tarde.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun configuraDropdownDiasDaSemana() {
@@ -86,20 +104,5 @@ class CadastrarAulaActivity : AppCompatActivity(R.layout.activity_cadastrar_aula
             OnItemClickListener { adapterView, view, position, id ->
                 diaSelecionado = adapterDiasDaSemana.getItem(position).toString()
             }
-    }
-
-    private fun diaSemanaSelecionado(diaText: String?): DiaSemana {
-        return when (diaText) {
-            "Domingo" -> DiaSemana.DOMINGO
-            "Segunda" -> DiaSemana.SEGUNDA
-            "Terça" -> DiaSemana.TERCA
-            "Quarta" -> DiaSemana.QUARTA
-            "Quinta" -> DiaSemana.QUINTA
-            "Sexta" -> DiaSemana.SEXTA
-            "Sábado" -> DiaSemana.SABADO
-            else -> {
-                DiaSemana.SEGUNDA
-            }
-        }
     }
 }
