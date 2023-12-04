@@ -1,10 +1,14 @@
 package com.dev.quixabus.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Horario (
-    val id: Int,
-    val horario: String,
-    val quantidadeViagens: String,
-    val responsavelOnibus: String,
-    val embarque: Boolean,
-    val desembarque: Boolean
-)
+    var id: String = "",
+    var horario: String = "",
+    var quantidadeViagens: String = "",
+    var responsavelOnibus: String = "",
+    var embarque: Boolean = false,
+    var desembarque: Boolean = false,
+): Parcelable

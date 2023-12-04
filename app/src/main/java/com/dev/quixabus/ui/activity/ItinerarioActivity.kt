@@ -22,7 +22,6 @@ import androidx.core.content.res.ResourcesCompat
 import com.dev.quixabus.R
 import com.dev.quixabus.dao.ItinerarioDao
 import com.dev.quixabus.databinding.ActivityItinerarioBinding
-import com.dev.quixabus.model.TipoParada
 import com.dev.quixabus.util.TopBar
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -80,19 +79,23 @@ class ItinerarioActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun updateMarkers() {
 
-        val paradas = dao.buscaParadas()
+        dao.buscarParadas() { paradas ->
+            if(paradas != null) {
+                paradas.forEach {
 
-        paradas.forEach {
+                    val icon = getMarkerIconFromDrawable(getParadaTipoDrawable(it.tipo))
 
-            val icon = getMarkerIconFromDrawable(getParadaTipoDrawable(it.tipo))
-
-            map.addMarker(
-                MarkerOptions()
-                    .title(getParadaTipoText(it.tipo))
-                    .position(LatLng(it.latitude, it.longitude))
-                    .snippet(it.endereco)
-                    .icon(icon)
-            )
+                    map.addMarker(
+                        MarkerOptions()
+                            .title(it.tipo)
+                            .position(LatLng(it.latitude, it.longitude))
+                            .snippet(it.endereco)
+                            .icon(icon)
+                    )
+                }
+            } else {
+                Toast.makeText(this, "Não foi possível obter as paradas, tente novamente mais tarde.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -211,21 +214,13 @@ class ItinerarioActivity : AppCompatActivity(), OnMapReadyCallback {
         private const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
     }
 
-    private fun getParadaTipoText(tipo: TipoParada): String {
+    private fun getParadaTipoDrawable(tipo: String): Drawable {
         return when(tipo) {
-            TipoParada.DESEMBARQUE -> "Desembarque"
-            TipoParada.EMBARQUE -> "Embarque"
-            TipoParada.CAMPUS -> "Campus"
-            TipoParada.RODOVIARIA -> "Rodoviária"
-        }
-    }
-
-    private fun getParadaTipoDrawable(tipo: TipoParada): Drawable {
-        return when(tipo) {
-            TipoParada.DESEMBARQUE -> ResourcesCompat.getDrawable(resources, R.drawable.marker_bus_desembarque, null)
-            TipoParada.EMBARQUE -> ResourcesCompat.getDrawable(resources, R.drawable.marker_bus_embarque, null)
-            TipoParada.CAMPUS -> ResourcesCompat.getDrawable(resources, R.drawable.marker_flag_circle_campus, null)
-            TipoParada.RODOVIARIA -> ResourcesCompat.getDrawable(resources, R.drawable.marker_flag_circle_rodoviaria, null)
+            "Desembarque" -> ResourcesCompat.getDrawable(resources, R.drawable.marker_bus_desembarque, null)
+            "Embarque" -> ResourcesCompat.getDrawable(resources, R.drawable.marker_bus_embarque, null)
+            "Campus" -> ResourcesCompat.getDrawable(resources, R.drawable.marker_flag_circle_campus, null)
+            "Rodoviária" -> ResourcesCompat.getDrawable(resources, R.drawable.marker_flag_circle_rodoviaria, null)
+            else -> ResourcesCompat.getDrawable(resources, R.drawable.marker_bus_desembarque, null)
         }!!
     }
 

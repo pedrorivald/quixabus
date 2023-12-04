@@ -1,12 +1,13 @@
 package com.dev.quixabus.model
 
-enum class TipoParada {
-    DESEMBARQUE, EMBARQUE, RODOVIARIA, CAMPUS
-}
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Parada (
-    val id: Int,
-    val endereco: String,
-    val latitude: Double,
-    val longitude: Double,
-    val tipo: TipoParada
-)
+    var id: String = "",
+    var endereco: String = "",
+    var latitude: Double = 0.0,
+    var longitude: Double = 0.0,
+    var tipo: String = ""
+): Parcelable
